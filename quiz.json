@@ -1,0 +1,257 @@
+{
+  "quiz": [
+    {
+      "question": "What is the primary difference between an insider threat and a shadow IT threat actor?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Level of sophistication/capability",
+        "B": "Resources/funding",
+        "C": "Malicious intent",
+        "D": "Level of access"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "question": "An application creates a temporary file to save a value for later use. A malicious actor deletes this file after its created but before its subsequent use by the application. What type of vulnerability is being exploited in this situation?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Race conditions",
+        "B": "Time-of-use(TOU)",
+        "C": "Memory leaks",
+        "D": "Memory injection"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "question": "During the decommissioning process of a database server, the IT department of Dion Training ensures that all stored customer data is rendered unrecoverable to protect against unauthorized access in the future. Which of the following practices is the IT department employing in this scenario?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Assignment",
+        "B": "Enumeration",
+        "C": "Sanitization",
+        "D": "Inventory"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "question": "Which of the following terms BEST describes a situation in which a company avoids addressing known system inefficiencies or shortcuts due to time constraints, potentially leading to future rework and vulnerabilities?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Complexity",
+        "B": "Cost",
+        "C": "Single point of failure",
+        "D": "Technical debt"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "question": "Dion Training Solutions is implementing a security system for its research facility, where sensitive data is stored. If the access control system fails, which mode should be adopted to ensure that no unauthorized personnel can enter the facility, even if it means some inconvenience to authorized staff?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Rate-based filtering",
+        "B": "Fail-closed",
+        "C": "Passive mode",
+        "D": "Fail-open"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "question": "You are a cybersecurity analyst for a large enterprise that has experienced several security incidents resulting from insider threats and compromised user accounts. The organization wants to enhance its security posture by implementing User Behavior Analytics (UBA). Which of the following approaches would be the MOST effective way to implement UBA for the given scenario?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Using UBA to monitor and analyze the activities of privileged users with elevated access rights only",
+        "B": "Implementing UBA on the organization's perimeter firewalls to analyze incoming and outgoing network traffic",
+        "C": "Deploying UBA on all endpoint devices to monitor user interactions and application usage",
+        "D": "Configuring UBA to perform scheduled scans of all user accounts prevent any anomalies"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "question": "Kelly Innovations decides to manage its IT infrastructure within its physical location, retaining full control over its hardware, software, and data. Which of the following security implications is MOST directly associated with this approach?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Dependence on external patch availability",
+        "B": "Risk transference to third-party vendors",
+        "C": "Increased responsibility for physical security",
+        "D": "Multi-tenancy risks"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "question": "Kelly Innovations LLC is implementing a wireless network and needs a wireless authentication method that support multiple mechanisms for authenticating both wired and wireless users. Which protocol BEST fits their requirements?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "RADIUS",
+        "B": "WPA3",
+        "C": "LDAP",
+        "D": "EAP"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "question": "Dion Training is implementing a security device tasked with inspecting live network traffic and taking immediate action to mitigate potential threats. Which of the following security items would MOST effectively satisfy this requirement?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Fail-open mode",
+        "B": "An active device",
+        "C": "Fail-closed mode",
+        "D": "A passive device"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "question": "Jenny, a newly hired sales representative, has been granted access to view customer records but is unable to modify, delete or add new ones. Only managers and the IT department have the ability to make changes to these records to maintain data integrity. Which principle is the organization applying?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Attribute-based access control (ABAC)",
+        "B": "Principle of least privilege",
+        "C": "Mandatory access control (MAC)",
+        "D": "Data classification"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "question": "Reed is getting a new computer from his employer, Kelly Innovations LLC. He wants to remove all his personal data from his old computer, ensuring it's irretrievable. Which of the following methods should he use?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "System restore",
+        "B": "Disk defragmentation",
+        "C": "Secure erase",
+        "D": "Emptying the recycle bin"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "question": "After the IT department proposed a new software update, Kevin, a system analyst, evaluates the potential effects of this change on the system performance, user experience, and business processes. Which term BEST describes Kevin's evaluation?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Version control",
+        "B": "Approval process",
+        "C": "Backout plan",
+        "D": "Impact analysis"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "question": "A company's access control mechanism determines access to resources base on user's job functions. The system enforces access control based on these predefined responsibilities, and users do not have the discretion to modify or override access permissions. Which type of access control mechanism is being used in this scenario?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Discretionary",
+        "B": "Rule-based",
+        "C": "Attribute-based",
+        "D": "Role-based"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "question": "A software development company regularly releases software updates to its global customer base. Recently, some customers reported receiving unauthorized and potentially malicious software updates. The company is now seeking to implement a security technique to ensure the authenticity and integrity of its software updates when delivered to customers. Which of the following would BEST assist in achieving this goal?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Antivirus scanning",
+        "B": "IDS solution",
+        "C": "MFA",
+        "D": "Code signing"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "question": "Which of the following terms BEST describes the measurement used to describe a 7% possibility of hardware failure in the next year based on past statistical data?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Exposure factor",
+        "B": "Severity ranking",
+        "C": "Probability",
+        "D": "Likelihood"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "question": "Which of the following mitigation techniques inspects and controls incoming and outgoing network traffic on a per-application basis?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Intrusion Detection System",
+        "B": "Network Segmentation",
+        "C": "Host-based Firewall",
+        "D": "Data Loss Prevention"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "question": "At Kelly Innovations LLC, Sasha received an unexpected call from someone claiming to be from the IT department. The caller asked her to confirm her username and password for a system upgrade. Unsure, Sasha hesitated and asked the caller to provide some form of identification or a callback number. Which of the following terms describes the Social Engineering technique that Sasha encountered?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Vishing",
+        "B": "Pharming",
+        "C": "Vulnerability Assessment",
+        "D": "Smishing"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "Emily is part of the IT team and oversees the secure transmission of sensitive data within her organization, ensuring that all systems comply with integrity protocols. She monitors for any inconsistencies or issues that could compromise data integrity. What role does Emily most likely hold?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Data Custodian",
+        "B": "Data Controller",
+        "C": "Data Processor",
+        "D": "Data Owner"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "If a company's server has an estimated Single Loss Expectancy (SLE) of $15,000 due to an operational failure, and the Annual Rate of Occurrence (ARO) of these failures is expected to be 0.1 times per year, what is the Annual Loss Expectancy (ALE)?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "$150,000",
+        "B": "$150",
+        "C": "$15,000",
+        "D": "$1,500"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "question": "Trust Us is a company that acts as a trusted entity. They issue and manage security credentials and issue digital signature wrappers for public keys for message encryption. What type of company is Trust Us?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Root of Trust",
+        "B": "Registration Authority",
+        "C": "Blockchain",
+        "D": "Certificate Authority"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "question": "When considering data storage, which of the following BEST describes a method to capture the state of a system at a specific point in time, offering a quick recovery solution without the need for a full backup?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Snapshots",
+        "B": "Full backups",
+        "C": "Differential backups",
+        "D": "Incremental backups"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "Dion Training wants to increase the trustworthiness of its website for its clients. They are seeking a certificate that is signed and verified by a recognized external authority. What type of certificate should they pursue?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Wildcard certificate",
+        "B": "Self-signed certificate",
+        "C": "Third-party certificate",
+        "D": "CSR"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "question": "Which of the following mitigation techniques can help reduce the exposure of systems to potential attacks by turning off unneeded or unwanted network communication channels?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Disabling ports and protocols",
+        "B": "Changing Default Passwords",
+        "C": "Patching",
+        "D": "Removing unnecessary software"
+      },
+      "correct_answer": "A"
+    }                                              
+  ]
+}
