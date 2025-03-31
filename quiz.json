@@ -252,6 +252,61 @@
         "D": "Removing unnecessary software"
       },
       "correct_answer": "A"
-    }                                              
+    },
+    {
+      "question": "A newly established e-commerce platform needs to identify potential risks to its operations. What should be their first step in the risk management process?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Conducting a Business Impact Analysis",
+        "B": "Setting up a Risk Register",
+        "C": "Performing Risk Identification",
+        "D": "Developing Risk Management Strategies"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "question": "A small business is establishing a risk management process and wants to record and monitor identified risks. What tool should they prioritize setting up?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Risk Register",
+        "B": "Business Impact Analysis Report",
+        "C": "Risk Tolerance Policy",
+        "D": "Risk Appetite Statement"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "A software development firm needs to decide how to handle the risk of potential litigation due to copyright infringement. Which risk management strategy would be most appropriate?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Risk Acceptance",
+        "B": "Risk Avoidance",
+        "C": "Risk Transfer",
+        "D": "Risk Mitigation"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "question": "An online retailer is conducting a Business Impact Analysis. What are they likely focusing on to ensure business continuity?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Recovery Time Objective (RTO) and Recovery Point Objective (RPO)",
+        "B": "Annualized Rate of Occurrence (ARO) and Probability",
+        "C": "Risk Tolerance and Risk Appetite",
+        "D": "Risk Register Updates"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "A cloud service provider is evaluating the potential impacts of various risks on their service availability. What method of risk analysis should they use to assess the potential frequency of these risks?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Qualitative Risk Analysis",
+        "B": "Quantitative Risk Analysis",
+        "C": "Assessing the Annualized Rate of Occurrence (ARO)",
+        "D": "Conducting a Risk Tolerance Evaluation"
+      },
+      "correct_answer": "C"
+    }
   ]
 }
