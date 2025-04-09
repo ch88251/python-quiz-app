@@ -1,10 +1,14 @@
 import json
 import textwrap
+import random
 
 def load_quiz(filename):
-    """Load quiz questions from a JSON file."""
+    """Load quiz questions from a JSON file and shuffle them."""
     with open(filename, "r") as file:
-        return json.load(file)["quiz"]
+        quiz_data = json.load(file)["quiz"]
+    
+    random.shuffle(quiz_data)  # Shuffle questions each time the quiz starts
+    return quiz_data
 
 def print_wrapped_text(text, width=80):
     """Prints text wrapped to the specified width while avoiding word breaks."""
@@ -50,5 +54,5 @@ def run_quiz(quiz_data):
     print(f"\nFinal Score: {score}/{total_questions}")
 
 if __name__ == "__main__":
-    quiz_data = load_quiz("quiz.json")  # Load the quiz from a JSON file
+    quiz_data = load_quiz("quiz.json")  # Load and shuffle the quiz data
     run_quiz(quiz_data)  # Start the quiz

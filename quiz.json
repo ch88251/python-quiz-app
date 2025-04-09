@@ -307,6 +307,204 @@
         "D": "Conducting a Risk Tolerance Evaluation"
       },
       "correct_answer": "C"
+    },
+    {
+      "question": "Dion Training is considering a collaboration with a new IT service vendor. To ensure compliance and adherence to industry standards, Dion Training wishes to see verifiable evaluations of the vendor's security controls and practices. Which of the following would provide Dion Training with insights into the vendor's own internal evaluations of their security measures?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Customer testimonials",
+        "B": "External penetration test reports",
+        "C": "Regulatory compliance certificates",
+        "D": "Evidence of internal audits"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "question": "Rippled, a drink vendor, is developing a disaster recovery plan to ensure the swift recovery of critical systems and processes in the event of a disruption. They are defining a specific metric which is the amount of acceptable amount of time it will take to return to normal business. What measure are they defining?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "RTO",
+        "B": "MTBF",
+        "C": "MTTR",
+        "D": "RPO"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "Kelly Innovations LLC has integrated a new payment gateway into their application. To ensure no potential security gaps exist, especially related to data breaches or financial data leaks, which of the following actions would be the MOST effective?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Engaging penetration testers to mimic real-world hacking techniques",
+        "B": "Updating the application to its latest version post-integration",
+        "C": "Ensuring two-factor authentication is enabled for application users",
+        "D": "Deploying a new intrusion detection system for the payment module"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "Jason and Reed, both IT specialists at Kelly Innovations LLC, are tasked with ensuring the workstations' secure baseline remains uncompromised over time. Which technique would BEST help them achieve this?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Implement playbooks to enforce and verify settings",
+        "B": "Rely solely on antivirus scans to detect changes in workstation configuration.",
+        "C": "Use Windows Update without a validation process",
+        "D": "Manually check each workstation at month-end for deviations from the baseline"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "Which email security standard helps prevent email spoofing by allowing domain owners to specify which mail servers are authorized to send email on their behalf?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "DKIM",
+        "B": "SPF",
+        "C": "DMARC",
+        "D": "SMTP"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "question": "Which of the following terms refers to a major program executed by powerful entities to shift public opinion?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Digital diplomacy",
+        "B": "Influence campaign",
+        "C": "Soft power",
+        "D": "Digital espionage"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "question": "Dion Training Solutions recently integrated a single security solution that provides multiple security functions at one point on their network. This solution incorporates functionalities such as intrusion prevention, gateway anti-virus, and VPN. Which of the following BEST describes this solution?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "UTM",
+        "B": "Firewall",
+        "C": "VPN gateway",
+        "D": "IPS"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "Which of the following mitigation techniques can help prevent users from making changes to the security features of devices by applying predefined security standards?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Configuration enforcement",
+        "B": "Patching",
+        "C": "Encryption",
+        "D": "Least Privilege"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "Which of the following strategies is MOST effective for organizations aiming to mitigate the risk of widespread disruptions due to a localized issue in their infrastructure?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Data masking",
+        "B": "Permission restrictions",
+        "C": "Geographic restrictions",
+        "D": "Infrastructure diversification"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "question": "You are making an appointment to get your hair cut. When you enter your personal data into the website for Dye My Darling, the data is placed in a database and paired with a smaller set of symbols that will represent your data. To access your personal data, your stylists' computer will access the database. If an attacker gains access to the computer, they will only see the set of symbols, not your personal data. What method of concealment is Dye My Darling using?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Tokenization",
+        "B": "Steganography",
+        "C": "Encryption",
+        "D": "Data Masking"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "Which of the following ports should be disabled or carefully monitored to prevent unauthorized Voice over IP (VoIP) signaling, which can be an avenue for toll fraud or unauthorized call control?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Port 5060",
+        "B": "Port 161",
+        "C": "Port 139",
+        "D": "Port 110"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "When integrating Cloud services with external applications, which of the following considerations is the most crucial in assessing the security risks associated with data transmission to these external service providers?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Virtualization isolation",
+        "B": "Encryption during transmission",
+        "C": "Access control policies",
+        "D": "Endpoint security"
+      },
+      "correct_answer": "B"
+    },
+    {
+      "question": "Rippled, a drink vendor, is developing a disaster recovery plan to ensure the swift recovery of critical systems and processes in the event of a disruption. They are defining a specific metric which is the amount of acceptable amount of time it will take to return to normal business. What measure are they defining?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "RTO",
+        "B": "MTBF",
+        "C": "MTTR",
+        "D": "RPO"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "Which of the following is the BEST type of backup that allows for the rapid redeployment of an OS without requiring reinstallation of third-party software, patches, and configurations?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Incremental backup",
+        "B": "File-level backup",
+        "C": "Differential backup",
+        "D": "Image backup"
+      },
+      "correct_answer": "D"
+    },
+    {
+      "question": "Manar is reviewing logs and finds that many logon attempts were made using common words followed by numbers or symbols. Each password is attempted on the 20 computers in the accounting department. He suspects that these passwords were generated by an automated tool. Which of the following password attacks is BEST illustrated by this finding?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Spraying",
+        "B": "Brute force",
+        "C": "Downgrade",
+        "D": "Birthday"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "At a high-security research facility, employees have been noticing some oddities. Every morning for a week, when the first employee arrives, they find the main entrance door slightly ajar, though nothing inside seems to be stolen or disturbed. The facility uses a high-tech access card system for entry, and logs show different authorized personnel supposedly accessing the building multiple times during the night. However, those employees claim they were at home during those hours. What type of malicious activity is MOST likely responsible for these oddities?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Environmental attack",
+        "B": "Brute force",
+        "C": "RFID cloning",
+        "D": "Malware"
+      },
+      "correct_answer": "C"
+    },
+    {
+      "question": "You are an IT security manager for an enterprise that deals with sensitive customer information and intellectual property. The organization is concerned about data loss through email and removable storage devices. As a security manager, you recommend implementing a Data Loss Prevention (DLP) solution to enhance security. Which of the following configurations would be the MOST effective way to implement Data Loss Prevention (DLP) for the given scenario?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Configuring the DLP solution to scan all outbound emails and files leaving the organization for sensitive information",
+        "B": "Using the DLP solution solely for monitoring purposes without implementing any preventive measures",
+        "C": "Enabling the DLP solution to block all email attachments and USB storage devices to prevent data leakage",
+        "D": "Implementing DLP on endpoints with a focus on monitoring and preventing data transfers between internal users"
+      },
+      "correct_answer": "A"
+    },
+    {
+      "question": "Dion Training is deploying a new application for remote employees. They want to ensure that users can securely log in without needing a physical device other than their smartphones. The system would generate a temporary numeric code on the user's device, which would then be used as a second form of authentication. Which of the following solutions BEST fulfills this requirement?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Software authentication tokens",
+        "B": "Network location-based authentication",
+        "C": "Static password",
+        "D": "Biometric authentication"
+      },
+      "correct_answer": "A"
     }
   ]
 }
