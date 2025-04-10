@@ -23,18 +23,25 @@ def ask_question(question_data, question_number, total_questions):
     for key, value in question_data["options"].items():
         wrapped_option = textwrap.fill(f"{key}. {value}", width=80, subsequent_indent="   ")
         print(wrapped_option)
+    
+    # Detect if it's a "select all that apply" question
+    multi_answer = isinstance(question_data["correct_answer"], list) and len(question_data["correct_answer"]) > 1
 
-    answer = input("Enter your answer: ").strip().upper()
-    
-    # Validate input
-    if question_data["type"] == "true_false":
-        while answer not in ["TRUE", "FALSE"]:
-            answer = input("Invalid input. Enter 'true' or 'false': ").strip().lower()
+    if multi_answer:
+      prompt = "Enter all correct answers (comma-separated, e.g., A,C): "
     else:
-        while answer not in question_data["options"].keys():
-            answer = input(f"Invalid input. Enter one of {', '.join(question_data['options'].keys())}: ").strip().upper()
+      prompt = "Enter your answer: "
+
+    valid_keys = set(question_data["options"].keys())
+
+    while True:
+      user_input = input(prompt).strip().upper().replace(" ", "")
+      user_answers = user_input.split(",")
+      if all(answer in valid_keys for answer in user_answers):
+        break
+      print(f"Invalid input. Please enter valid option letters from {', '.join(valid_keys)}.")
     
-    return answer
+    return sorted(set(user_answers))
 
 def run_quiz(quiz_data):
     """Run the quiz and track score."""
@@ -42,14 +49,14 @@ def run_quiz(quiz_data):
     total_questions = len(quiz_data)
 
     for i, question in enumerate(quiz_data, start=1):
-        user_answer = ask_question(question, i, total_questions)
-        correct_answer = question["correct_answer"]
+        user_answers = ask_question(question, i, total_questions)
+        correct_answers = sorted(set(question["correct_answer"]))
 
-        if user_answer == correct_answer:
+        if user_answers == correct_answers:
             print("✅ Correct!")
             score += 1
         else:
-            print(f"❌ Incorrect! The correct answer was: {correct_answer}")
+            print(f"❌ Incorrect! Correct answer(s): {', '.join(correct_answers)}")
 
     print(f"\nFinal Score: {score}/{total_questions}")
 
