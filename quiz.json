@@ -673,6 +673,72 @@
         "D": "Wiretapping"
       },
       "correct_answer": ["D"]
+    },
+    {
+      "question": "Which of the following statements is NOT true about the importance of continuous integration in relation to secure operations?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Continuous integration may slow down the development process but it provides far more secure systems overall",
+        "B": "Continuous integration can increase software quality by catching and fixing bugs quickly",
+        "C": "Continuous integration automates the building and testing of code, which enhances developer productivity",
+        "D": "Continuous integration enables early detection of issues, making it easier to address them before they escalate"
+      },
+      "correct_answer": ["A"]
+    },
+    {
+      "question": "Which term refers to the percentage of an asset's value that is expected to be lost when a specific risk eventuates?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Damage proportion",
+        "B": "EF",
+        "C": "SLE",
+        "D": "Asset impact"
+      },
+      "correct_answer": ["B"]
+    },
+    {
+      "question": "Lexicon, an AI company, seeks to implement a security measure to systematically identify, evaluate, and prioritize potential risks to their systems and networks. Which of the following is an example of a managerial security control that would help achieve this?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Security Guards",
+        "B": "Risk assessments",
+        "C": "Intrusion detection system",
+        "D": "Firewall"
+      },
+      "correct_answer": ["B"]
+    },
+    {
+      "question": "Jamario, an IT administrator for Dion Training Solutions, is considering deploying an agent-based web filter solution to manage and monitor web traffic for remote employees. Which of the following is the MOST important advantage of implementing agent-based web filters over traditional gateway-based filters for this purpose?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "It doesn’t require any updates or maintenance",
+        "B": "It allows for consistent policy enforcement regardless of the user's location",
+        "C": "It reduces the total cost of ownership (TCO) due to the absence of hardware",
+        "D": "It can filter traffic at a faster rate than gateway solutions"
+      },
+      "correct_answer": ["B"]
+    },
+    {
+      "question": "Which of the following is a disadvantage of agentless posture assessment in Network Access Control (NAC) solutions?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Less detailed information about the client is available",
+        "B": "Requires more storage space on the client device",
+        "C": "Inability to support smartphones, tablets, and IoT devices",
+        "D": "Increased risk of malware infection on client devices"
+      },
+      "correct_answer": ["A"]
+    },
+    {
+      "question": "Which of the following BEST describes the role of classification in effective hardware, software, and data asset management?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Classification helps in tracking the financial value of assets",
+        "B": "Classification allows organizations can track their physical location across multiple locations",
+        "C": "Classification establishes accountability for asset usage",
+        "D": "Classification ensures that assets are labeled with appropriate access levels"
+      },
+      "correct_answer": ["D"]
     }
   ]
 }
