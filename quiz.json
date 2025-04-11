@@ -739,6 +739,127 @@
         "D": "Classification ensures that assets are labeled with appropriate access levels"
       },
       "correct_answer": ["D"]
+    },
+    {
+      "question": "What part of a BPA for mission essential functions provides a detailed, step-by-step description of the procedural tasks performed?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Hardware",
+        "B": "Process flow",
+        "C": "Inputs",
+        "D": "Outputs"
+      },
+      "correct_answer": ["B"]
+    },
+    {
+      "question": "In the realm of digital forensics, which activity is a primary focus during the preservation phase?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Performing keyword searches on electronic documents to identify pertinent information",
+        "B": "Drafting a comprehensive summary of findings and presenting it to stakeholders",
+        "C": "Generating and documenting cryptographic hashes of digital evidence to verify its integrity",
+        "D": "Recording the specific tools and methodologies used during the evidence collection phase"
+      },
+      "correct_answer": ["C"]
+    },
+    {
+      "question": "As a network administrator responsible for evaluating a company's encryption protocol method for wireless devices, you have discovered that the company is currently utilizing a deprecated encryption protocol that poses a significant security threat. Which of the following is the MOST appropriate encryption protocol to recommend upgrading to?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "WPA",
+        "B": "TKIP",
+        "C": "WEP",
+        "D": "AES"
+      },
+      "correct_answer": ["D"]
+    },
+    {
+      "question": "Which of the following statements is NOT true concerning the significance of NetFlow?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "NetFlow can help with capacity planning and understanding network performance issues",
+        "B": "NetFlow can interpret traffic flow patterns and identify the type of network attack that is occurring",
+        "C": "NetFlow can identify the source and destination of traffic, making it easier to spot potential threats",
+        "D": "NetFlow helps provide an understanding of network traffic flow, enhancing security by identifying unusual patterns"
+      },
+      "correct_answer": ["B"]
+    },
+    {
+      "question": "As a security analyst, you are reviewing application logs while investigating a suspected breach. Which of the following pieces of information is NOT typically documented in the application log data?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Server IP address where the application is hosted",
+        "B": "Timestamps of application activity",
+        "C": "The physical location of the user accessing the application",
+        "D": "User IDs related to specific application transactions"
+      },
+      "correct_answer": ["C"]
+    },
+    {
+      "question": "Which of the following solutions should a data center implement to guarantee customer data remains unreadable in the event of a physical server compromise?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Server clustering",
+        "B": "Data deduplication",
+        "C": "RAID",
+        "D": "Full disk encryption"
+      },
+      "correct_answer": ["D"]
+    },
+    {
+      "question": "The New York Inquirer's main headquarters has a diverse IT infrastructure, including servers, workstations, and IoT devices. They have implemented a firewall to protect their internal network from external threats. The organization wants to modify the firewall rules to enhance security and minimize potential attack vectors. Which modification to firewall ports and protocols is NOT recommended for the organization to enhance security?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Enabling stateful Inspection for packet filtering",
+        "B": "Closing unused and unnecessary ports and protocols",
+        "C": "Allowing any outgoing traffic to any destination",
+        "D": "Implementing port forwarding for remote access to internal servers"
+      },
+      "correct_answer": ["C"]
+    },
+    {
+      "question": "An organization hires a third-party vendor to handle its data storage needs. To ensure data confidentiality and establish clear expectations around responsibilities, they sign a document that outlines security controls, availability requirements, and confidentiality clauses. Which type of agreement is this document?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Memorandum of Understanding (MOU)",
+        "B": "Data Use Agreement (DUA)",
+        "C": "Service Level Agreement (SLA)",
+        "D": "Business Partnership Agreement (BPA)"
+      },
+      "correct_answer": ["C"]
+    },
+    {
+      "question": "Morris has organized an exercise for his security team to test their new defense plans. He has divided the team into two groups: one defending the system and the other attempting to breach it. The groups, set up with similar experience and size, will compete, and the winning team will have lunch catered. What type of exercise has Morris created?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Functional exercise",
+        "B": "Tabletop exercise",
+        "C": "Simulation",
+        "D": "Failover"
+      },
+      "correct_answer": ["C"]
+    },
+    {
+      "question": "Which of the following approaches ensures real-time or near-real-time duplication of data to a secondary location for purposes like high availability, disaster recovery, and load balancing?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Snapshots",
+        "B": "Journaling",
+        "C": "Differential backups",
+        "D": "Replication"
+      },
+      "correct_answer": ["D"]
+    },
+    {
+      "question": "Which technique, when considering high availability, involves distributing network or application traffic across a number of servers to enhance the performance and reliability of applications?",
+      "type": "multiple_choice",
+      "options": {
+        "A": "Clustering",
+        "B": "Load balancing",
+        "C": "Frequency",
+        "D": "Geographic dispersion"
+      },
+      "correct_answer": ["B"]
     }
   ]
 }
