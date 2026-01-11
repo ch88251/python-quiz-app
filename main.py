@@ -238,12 +238,13 @@ class QuizApp(QMainWindow):
         """Display the Subject Management dialog."""
         dialog = SubjectManagementDialog(self.db, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            # Reload subjects if they were modified
+            # Reload subjects if they were modified (main window displays subjects in dropdown)
             self.load_subjects()
     
     def show_question_management(self):
         """Display the Question Management dialog."""
         dialog = QuestionManagementDialog(self.db, self)
+        # No need to reload after question management since main window doesn't display questions
         dialog.exec()
         
     def load_subjects(self):
