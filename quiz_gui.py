@@ -3,9 +3,10 @@ import json
 import random
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QLabel, QPushButton, QRadioButton, 
-                             QCheckBox, QButtonGroup, QMessageBox, QProgressBar)
+                             QCheckBox, QButtonGroup, QMessageBox, QProgressBar,
+                             QMenuBar)
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QFont
+from PyQt6.QtGui import QFont, QAction
 
 
 class QuizApp(QMainWindow):
@@ -22,6 +23,9 @@ class QuizApp(QMainWindow):
         """Initialize the user interface."""
         self.setWindowTitle("Python Quiz App")
         self.setGeometry(100, 100, 800, 600)
+        
+        # Create menu bar
+        self.create_menu_bar()
         
         # Create central widget and main layout
         central_widget = QWidget()
@@ -139,6 +143,47 @@ class QuizApp(QMainWindow):
                 height: 20px;
             }
         """)
+    
+    def create_menu_bar(self):
+        """Create the menu bar with App and Help menus."""
+        menubar = self.menuBar()
+        
+        # App menu (left side)
+        app_menu = menubar.addMenu("App")
+        
+        # Exit action
+        exit_action = QAction("Exit", self)
+        exit_action.triggered.connect(self.close)
+        app_menu.addAction(exit_action)
+        
+        # Create a separate menu bar for the Help menu on the right
+        # Using setCornerWidget to position Help menu on the right
+        right_menubar = QMenuBar(menubar)
+        help_menu = right_menubar.addMenu("Help")
+        
+        # About action
+        about_action = QAction("About", self)
+        about_action.triggered.connect(self.show_about_dialog)
+        help_menu.addAction(about_action)
+        
+        # Set the right menubar as a corner widget
+        menubar.setCornerWidget(right_menubar, Qt.Corner.TopRightCorner)
+    
+    def show_about_dialog(self):
+        """Display the About dialog."""
+        about_text = """
+        <h2>Python Quiz App</h2>
+        <p><b>Version:</b> 1.0.0</p>
+        <p><b>Created by:</b> Charles Hayes</p>
+        """
+        
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Icon.Information)
+        msg.setWindowTitle("About Python Quiz App")
+        msg.setTextFormat(Qt.TextFormat.RichText)
+        msg.setText(about_text)
+        msg.setStandardButtons(QMessageBox.StandardButton.Ok)
+        msg.exec()
         
     def load_quiz(self):
         """Load quiz questions from JSON file and shuffle them."""
