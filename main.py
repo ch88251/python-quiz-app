@@ -690,8 +690,6 @@ class QuizApp(QMainWindow):
                 option_layout.addWidget(label, 1)  # Stretch factor 1 to take remaining space
                 
                 self.options_layout.addLayout(option_layout)
-                
-                self.options_layout.addWidget(radio)
         
         # Update navigation buttons for review mode
         self.prev_button.setEnabled(self.current_question > 0)
