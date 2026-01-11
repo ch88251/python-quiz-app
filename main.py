@@ -974,6 +974,10 @@ class CategoryDialog(QDialog):
 class QuestionsView(QWidget):
     """Widget for managing questions."""
     
+    # Constants for question text display
+    MAX_QUESTION_LENGTH = 100
+    TRUNCATE_LENGTH = 97
+    
     def __init__(self, db, parent=None):
         super().__init__(parent)
         self.db = db
@@ -1058,8 +1062,8 @@ class QuestionsView(QWidget):
             
             # Truncate question text if too long
             question_text = question['question_text']
-            if len(question_text) > 100:
-                question_text = question_text[:97] + "..."
+            if len(question_text) > self.MAX_QUESTION_LENGTH:
+                question_text = question_text[:self.TRUNCATE_LENGTH] + "..."
             self.table.setItem(row, 2, QTableWidgetItem(question_text))
             
             self.table.setItem(row, 3, QTableWidgetItem(question['question_type']))
