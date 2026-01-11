@@ -508,17 +508,18 @@ class QuizApp(QMainWindow):
             review_msg.setIcon(QMessageBox.Icon.Question)
             review_msg.setWindowTitle("What's Next?")
             review_msg.setText("Would you like to review your answers or take the quiz again?")
-            review_msg.addButton("Review Answers", QMessageBox.ButtonRole.YesRole)
-            review_msg.addButton("Restart Quiz", QMessageBox.ButtonRole.NoRole)
-            review_msg.addButton("Exit", QMessageBox.ButtonRole.RejectRole)
+            review_button = review_msg.addButton("Review Answers", QMessageBox.ButtonRole.YesRole)
+            restart_button = review_msg.addButton("Restart Quiz", QMessageBox.ButtonRole.NoRole)
+            exit_button = review_msg.addButton("Exit", QMessageBox.ButtonRole.RejectRole)
             
-            result = review_msg.exec()
+            review_msg.exec()
+            clicked_button = review_msg.clickedButton()
             
-            if result == 0:  # Review Answers
+            if clicked_button == review_button:
                 self.review_answers()
-            elif result == 1:  # Restart Quiz
+            elif clicked_button == restart_button:
                 self.restart_quiz()
-            else:  # Exit
+            else:  # Exit button
                 self.close()
     
     def review_answers(self):
@@ -643,12 +644,13 @@ class QuizApp(QMainWindow):
         msg.setIcon(QMessageBox.Icon.Question)
         msg.setWindowTitle("Review Complete")
         msg.setText("Review complete! What would you like to do?")
-        msg.addButton("Restart Quiz", QMessageBox.ButtonRole.YesRole)
-        msg.addButton("Exit", QMessageBox.ButtonRole.NoRole)
+        restart_button = msg.addButton("Restart Quiz", QMessageBox.ButtonRole.YesRole)
+        exit_button = msg.addButton("Exit", QMessageBox.ButtonRole.NoRole)
         
-        result = msg.exec()
+        msg.exec()
+        clicked_button = msg.clickedButton()
         
-        if result == 0:  # Restart
+        if clicked_button == restart_button:
             self.restart_quiz()
         else:  # Exit
             self.close()
