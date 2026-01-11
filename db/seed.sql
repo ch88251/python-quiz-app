@@ -15,7 +15,12 @@ ALTER SEQUENCE correct_answers_id_seq RESTART WITH 1;
 
 -- Insert subjects
 INSERT INTO subjects (name, description) VALUES
-('Security+', 'CompTIA Security+ certification exam preparation questions');
+('Security+', 'CompTIA Security+ certification exam preparation questions'),
+('AWS Certified Solutions Architect', 'AWS Certified Solutions Architect exam preparation questions');
+
+-- ====================================================
+-- Questions and Answers for Subject: Security+
+-- ====================================================
 
 -- Question 1
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
@@ -1036,3 +1041,36 @@ INSERT INTO options (question_id, option_key, option_text) VALUES
 
 INSERT INTO correct_answers (question_id, answer_key) VALUES
 (78, 'B');
+
+-- ======================================================================
+-- Questions and Answers for Subject: AWS Certified Solutions Architect
+-- ======================================================================
+
+-- Question 1
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(2, 'A company has moved its business critical data to Amazon Elastic File System (Amazon EFS) which will be accessed by multiple Amazon EC2 instances.As an AWS Certified Solutions Architect - Associate, which of the following would you recommend to exercise access control such that only the permitted Amazon EC2 instances can read from the Amazon EFS file system? (Select two)', 'multiple_choice');
+
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(79, 'A', 'Set up the IAM policy root credentials to control and configure the clients accessing the Amazon EFS file system'),
+(79, 'B', 'Use VPC security groups to control the network traffic to and from your file system'),
+(79, 'C', 'Use network access control list (network ACL) to control the network traffic to and from your Amazon EC2 instance'),
+(79, 'D', 'Use Amazon GuardDuty to curb unwanted access to Amazon EFS file system'),
+(79, 'E', 'Use an IAM policy to control access for clients who can mount your file system with the required permissions');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(79, 'B'),
+(79, 'E');
+
+-- Question 2
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(2, 'A digital event-ticketing platform hosts its core transaction-processing service on AWS. The service runs on Amazon EC2 instances and stores finalized transactions in an Amazon Aurora PostgreSQL database. During periods of high user activity - such as flash ticket sales or holiday promotions - the application begins timing out, causing failed or delayed purchases. A solutions architect has been asked to redesign the backend for scalability and cost-efficiency, without reengineering the database layer. Which combination of actions will meet these goals in the most cost-effective and scalable manner? (Select two)', 'multiple_choice');
+
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(80, 'A', 'Deploy read replicas for the Aurora database in another Region and configure EC2 instances to read and write from the nearest replica based on latency'),
+(80, 'B', 'Use an Amazon ElastiCache cluster to cache database queries. Configure the application to store purchase transactions in the cache before writing to the database'),
+(80, 'C', 'Deploy an Amazon API Gateway with throttling and usage plans to slow down incoming purchase requests during peak times and maintain application stability'),
+(80, 'D', 'Modify the application to publish purchase events to an Amazon SQS queue. Launch an Auto Scaling group of EC2 workers that poll the queue and process purchases asynchronously'),
+(80, 'E', 'Implement Amazon RDS Proxy between the application and the Aurora PostgreSQL cluster. Deploy EC2 instances in an Auto Scaling group to retry transactions as needed');
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(80, 'D'),
+(80, 'E');
