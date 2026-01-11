@@ -26,7 +26,8 @@ class QuizApp(QMainWindow):
     def init_ui(self):
         """Initialize the user interface."""
         self.setWindowTitle("Quiz Application")
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 1200, 800)
+        self.setFixedSize(1200, 800)
         
         # Create menu bar
         self.create_menu_bar()
@@ -88,7 +89,7 @@ class QuizApp(QMainWindow):
         # Instruction label (for multi-select questions)
         self.instruction_label = QLabel("")
         instruction_font = QFont()
-        instruction_font.setPointSize(10)
+        instruction_font.setPointSize(12)
         instruction_font.setItalic(True)
         self.instruction_label.setFont(instruction_font)
         self.instruction_label.setStyleSheet("color: #666;")
@@ -122,10 +123,12 @@ class QuizApp(QMainWindow):
         self.next_button = QPushButton("Next")
         self.next_button.setMinimumHeight(40)
         self.next_button.setMaximumWidth(120)
+        self.next_button.clicked.connect(self.next_question)
         button_layout.addWidget(self.next_button)
         
         self.submit_button = QPushButton("Submit Quiz")
         self.submit_button.setMinimumHeight(40)
+        self.submit_button.setMaximumWidth(120)
         self.submit_button.clicked.connect(self.submit_quiz)
         self.submit_button.setVisible(False)
         button_layout.addWidget(self.submit_button)
@@ -139,6 +142,7 @@ class QuizApp(QMainWindow):
             }
             QMenuBar {
                 background-color: lightgray;
+                font-size: 16px;
             }
             QComboBox {
                 background-color: white;
@@ -192,8 +196,8 @@ class QuizApp(QMainWindow):
                 padding: 8px;
             }
             QRadioButton::indicator, QCheckBox::indicator {
-                width: 20px;
-                height: 20px;
+                width: 24px;
+                height: 24px;
             }
         """)
     
@@ -1162,7 +1166,7 @@ class QuestionDialog(QDialog):
         # Question text
         layout.addWidget(QLabel("Question:"))
         self.question_edit = QTextEdit()
-        self.question_edit.setMaximumHeight(80)
+        self.question_edit.setMaximumHeight(100)
         layout.addWidget(self.question_edit)
         
         # Question type
