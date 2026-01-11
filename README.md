@@ -124,62 +124,48 @@ For questions with multiple correct answers, use an array:
 
 ```bash
 cd db
-docker-compose start   # Start
-docker-compose stop    # Stop
-docker-compose restart # Restart
+docker compose up -d
+docker compose down
 ```
 
 ### View Database Logs
 
 ```bash
 cd db
-docker-compose logs -f
+docker compose logs -f
 ```
 
 ### Connect to Database
 
 ```bash
-docker exec -it quiz_postgres psql -U quiz_user -d quiz_db
+cd db
+docker compose exec -it db psql -U quiz_user -d quiz_db
 ```
 
-## Development
+### View Database Tables
 
-### Adding New Questions
-
-You can add questions programmatically using the QuizDatabase API:
-
-```python
-from quiz_db import QuizDatabase
-
-db = QuizDatabase()
-db.connect()
-
-db.add_question(
-    question_text="What is Python?",
-    question_type="multiple_choice",
-    options={
-        "A": "A programming language",
-        "B": "A snake",
-        "C": "A framework",
-        "D": "An IDE"
-    },
-    correct_answers=["A"]
-)
-
-db.close()
+```bash
+quiz_db=# \dt
+              List of relations
+ Schema |      Name       | Type  |   Owner   
+--------+-----------------+-------+-----------
+ public | correct_answers | table | quiz_user
+ public | options         | table | quiz_user
+ public | questions       | table | quiz_user
+ public | subjects        | table | quiz_user
+(4 rows)
 ```
 
-Or edit `quiz.json` and re-run the migration script.
+## Database Backup and Restore
 
-## Files Overview
+### Database Backup
 
-- `quiz_gui.py` - Main GUI application
-- `quiz_db.py` - Database interface module
-- `migrate_to_postgres.py` - Migration script from JSON to PostgreSQL
-- `verify_database.py` - Database verification script
-- `setup_postgres.sh` - Automated setup script
-- `db/init.sql` - Database schema initialization
-- `db/docker-compose.yml` - Docker configuration for PostgreSQL
-- `quiz.json` - Original quiz data (used for migration)
-- `requirements.txt` - Python dependencies
+```bash
+docker compose exec -e PGPASSWORD=quiz_password db pg_dump -U quiz_user -d quiz_db > quiz_backup.sql
+```
 
+### Database Restore
+
+```bash
+docker compose exec -i db pg_restore -U quiz_user -d quiz_db < quiz_backup.sql
+```

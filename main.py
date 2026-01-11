@@ -112,15 +112,16 @@ class QuizApp(QMainWindow):
         # Navigation buttons
         button_layout = QHBoxLayout()
         
-        self.prev_button = QPushButton("← Previous")
+        self.prev_button = QPushButton("Previous")
         self.prev_button.setMinimumHeight(40)
+        self.prev_button.setMaximumWidth(120)
         self.prev_button.clicked.connect(self.previous_question)
         self.prev_button.setEnabled(False)
         button_layout.addWidget(self.prev_button)
         
-        self.next_button = QPushButton("Next →")
+        self.next_button = QPushButton("Next")
         self.next_button.setMinimumHeight(40)
-        self.next_button.clicked.connect(self.next_question)
+        self.next_button.setMaximumWidth(120)
         button_layout.addWidget(self.next_button)
         
         self.submit_button = QPushButton("Submit Quiz")
@@ -144,7 +145,7 @@ class QuizApp(QMainWindow):
                 border: 2px solid #4CAF50;
                 border-radius: 5px;
                 padding: 5px;
-                font-size: 13px;
+                font-size: 16px;
                 color: black;
             }
             QComboBox:hover {
@@ -175,8 +176,9 @@ class QuizApp(QMainWindow):
                 border: none;
                 padding: 10px;
                 border-radius: 5px;
-                font-size: 14px;
+                font-size: 16px;
                 font-weight: bold;
+                width: 120px;
             }
             QPushButton:hover {
                 background-color: #45a049;
@@ -186,7 +188,7 @@ class QuizApp(QMainWindow):
                 color: #666666;
             }
             QRadioButton, QCheckBox {
-                font-size: 13px;
+                font-size: 16px;
                 padding: 8px;
             }
             QRadioButton::indicator, QCheckBox::indicator {
@@ -238,14 +240,14 @@ class QuizApp(QMainWindow):
     def show_about_dialog(self):
         """Display the About dialog."""
         about_text = """
-        <h2>Python Quiz App</h2>
+        <h2>Quiz Application</h2>
         <p><b>Version:</b> 1.0.0</p>
         <p><b>Created by:</b> Charles Hayes</p>
         """
         
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Icon.Information)
-        msg.setWindowTitle("About Python Quiz App")
+        msg.setWindowTitle("About Quiz Application")
         msg.setTextFormat(Qt.TextFormat.RichText)
         msg.setText(about_text)
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
@@ -255,13 +257,11 @@ class QuizApp(QMainWindow):
         """Display the Subject Management dialog."""
         dialog = SubjectManagementDialog(self.db, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            # Reload subjects if they were modified (main window displays subjects in dropdown)
             self.load_subjects()
     
     def show_question_management(self):
         """Display the Question Management dialog."""
         dialog = QuestionManagementDialog(self.db, self)
-        # No need to reload after question management since main window doesn't display questions
         dialog.exec()
         
     def load_subjects(self):
@@ -287,12 +287,12 @@ class QuizApp(QMainWindow):
                     self,
                     "No Data",
                     "No subjects found in the database.\n\n"
-                    "Please run: python migrate_to_postgres.py"
+                    "You must reseed the database with initial data.\n"
                 )
                 sys.exit(1)
             
             # Populate subject combo box
-            self.subject_combo.blockSignals(True)  # Prevent triggering on_subject_changed
+            self.subject_combo.blockSignals(True)
             for subject in self.subjects:
                 self.subject_combo.addItem(subject['name'], subject['id'])
             self.subject_combo.blockSignals(False)
@@ -339,7 +339,7 @@ class QuizApp(QMainWindow):
                 QMessageBox.warning(
                     self,
                     "No Questions",
-                    f"No questions found for this subject.\n\n"
+                    "No questions found for this subject.\n\n"
                     "Please add questions to the database."
                 )
                 return
@@ -1111,7 +1111,7 @@ class QuestionsView(QWidget):
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Icon.Warning)
         msg.setWindowTitle("Confirm Deletion")
-        msg.setText(f"Are you sure you want to delete this question?")
+        msg.setText("Are you sure you want to delete this question?")
         msg.setInformativeText(f"Question: {question_text}")
         msg.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         msg.setDefaultButton(QMessageBox.StandardButton.No)
