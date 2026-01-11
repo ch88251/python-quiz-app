@@ -226,7 +226,7 @@ class QuizDatabase:
     
     def add_subject(self, name, description=""):
         """
-        Add a new subject/category to the database.
+        Add a new subject to the database.
         
         Args:
             name: The name of the subject
@@ -260,7 +260,7 @@ class QuizDatabase:
     
     def update_subject(self, subject_id, name, description=""):
         """
-        Update an existing subject/category.
+        Update an existing subject.
         
         Args:
             subject_id: The ID of the subject to update
@@ -293,7 +293,7 @@ class QuizDatabase:
     
     def delete_subject(self, subject_id):
         """
-        Delete a subject/category and all associated questions (cascade).
+        Delete a subject and all associated questions (cascade).
         
         Args:
             subject_id: The ID of the subject to delete

@@ -827,22 +827,22 @@ class CategoriesView(QWidget):
         # Action buttons
         button_layout = QHBoxLayout()
         
-        add_button = QPushButton("Add Category")
-        add_button.clicked.connect(self.add_category)
+        add_button = QPushButton("Add Subject")
+        add_button.clicked.connect(self.add_subject)
         button_layout.addWidget(add_button)
         
-        edit_button = QPushButton("Edit Category")
-        edit_button.clicked.connect(self.edit_category)
+        edit_button = QPushButton("Edit Subject")
+        edit_button.clicked.connect(self.edit_subject)
         button_layout.addWidget(edit_button)
         
-        delete_button = QPushButton("Delete Category")
-        delete_button.clicked.connect(self.delete_category)
+        delete_button = QPushButton("Delete Subject")
+        delete_button.clicked.connect(self.delete_subject)
         button_layout.addWidget(delete_button)
         
         button_layout.addStretch()
         layout.addLayout(button_layout)
         
-        # Categories table
+        # Subjects table
         self.table = QTableWidget()
         self.table.setColumnCount(3)
         self.table.setHorizontalHeaderLabels(["ID", "Name", "Description"])
@@ -863,77 +863,76 @@ class CategoriesView(QWidget):
         categories = self.db.get_all_subjects()
         
         self.table.setRowCount(0)
-        for category in categories:
+        for subject in categories:
             row = self.table.rowCount()
             self.table.insertRow(row)
             
-            self.table.setItem(row, 0, QTableWidgetItem(str(category['id'])))
-            self.table.setItem(row, 1, QTableWidgetItem(category['name']))
-            self.table.setItem(row, 2, QTableWidgetItem(category.get('description', '')))
+            self.table.setItem(row, 0, QTableWidgetItem(str(subject['id'])))
+            self.table.setItem(row, 1, QTableWidgetItem(subject['name']))
+            self.table.setItem(row, 2, QTableWidgetItem(subject.get('description', '')))
             
-    def add_category(self):
-        """Add a new category."""
-        dialog = CategoryDialog(self.db, self)
+    def add_subject(self):
+        """Add a new subject."""
+        dialog = SubjectDialog(self.db, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             self.load_categories()
             
-    def edit_category(self):
-        """Edit the selected category."""
+    def edit_subject(self):
+        """Edit the selected subject."""
         selected_rows = self.table.selectionModel().selectedRows()
         if not selected_rows:
-            QMessageBox.warning(self, "No Selection", "Please select a category to edit.")
+            QMessageBox.warning(self, "No Selection", "Please select a subject to edit.")
             return
             
         row = selected_rows[0].row()
-        category_id = int(self.table.item(row, 0).text())
-        category_name = self.table.item(row, 1).text()
-        category_desc = self.table.item(row, 2).text()
+        subject_id = int(self.table.item(row, 0).text())
+        subject_name = self.table.item(row, 1).text()
+        subject_desc = self.table.item(row, 2).text()
         
-        dialog = CategoryDialog(self.db, self, category_id, category_name, category_desc)
+        dialog = SubjectDialog(self.db, self, subject_id, subject_name, subject_desc)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             self.load_categories()
             
-    def delete_category(self):
-        """Delete the selected category."""
+    def delete_subject(self):
+        """Delete the selected subject."""
         selected_rows = self.table.selectionModel().selectedRows()
         if not selected_rows:
-            QMessageBox.warning(self, "No Selection", "Please select a category to delete.")
+            QMessageBox.warning(self, "No Selection", "Please select a subject to delete.")
             return
             
         row = selected_rows[0].row()
-        category_id = int(self.table.item(row, 0).text())
-        category_name = self.table.item(row, 1).text()
+        subject_id = int(self.table.item(row, 0).text())
+        subject_name = self.table.item(row, 1).text()
         
         # Confirm deletion
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Icon.Warning)
         msg.setWindowTitle("Confirm Deletion")
-        msg.setText(f"Are you sure you want to delete the category '{category_name}'?")
+        msg.setText(f"Are you sure you want to delete the subject '{subject_name}'?")
         msg.setInformativeText("This will also delete all associated questions and answers!")
         msg.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         msg.setDefaultButton(QMessageBox.StandardButton.No)
         
         if msg.exec() == QMessageBox.StandardButton.Yes:
-            if self.db.delete_subject(category_id):
-                QMessageBox.information(self, "Success", "Category deleted successfully.")
+            if self.db.delete_subject(subject_id):
+                QMessageBox.information(self, "Success", "Subject deleted successfully.")
                 self.load_categories()
             else:
-                QMessageBox.critical(self, "Error", "Failed to delete category.")
+                QMessageBox.critical(self, "Error", "Failed to delete subject.")
 
-
-class CategoryDialog(QDialog):
-    """Dialog for adding or editing a category."""
+class SubjectDialog(QDialog):
+    """Dialog for adding or editing a subject."""
     
-    def __init__(self, db, parent=None, category_id=None, name="", description=""):
+    def __init__(self, db, parent=None, subject_id=None, name="", description=""):
         super().__init__(parent)
         self.db = db
-        self.category_id = category_id
-        self.is_edit = category_id is not None
+        self.subject_id = subject_id
+        self.is_edit = subject_id is not None
         self.init_ui(name, description)
         
     def init_ui(self, name, description):
-        """Initialize the category dialog UI."""
-        self.setWindowTitle("Edit Category" if self.is_edit else "Add Category")
+        """Initialize the subject dialog UI."""
+        self.setWindowTitle("Edit Subject" if self.is_edit else "Add Subject")
         self.setGeometry(300, 300, 400, 200)
         
         layout = QFormLayout(self)
@@ -951,33 +950,33 @@ class CategoryDialog(QDialog):
         button_box = QDialogButtonBox(
             QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel
         )
-        button_box.accepted.connect(self.save_category)
+        button_box.accepted.connect(self.save_subject)
         button_box.rejected.connect(self.reject)
         layout.addRow(button_box)
         
-    def save_category(self):
-        """Save the category to the database."""
+    def save_subject(self):
+        """Save the subject to the database."""
         name = self.name_edit.text().strip()
         description = self.description_edit.toPlainText().strip()
         
         if not name:
-            QMessageBox.warning(self, "Validation Error", "Category name is required.")
+            QMessageBox.warning(self, "Validation Error", "Subject name is required.")
             return
             
         if self.is_edit:
-            # Update existing category
-            if self.db.update_subject(self.category_id, name, description):
-                QMessageBox.information(self, "Success", "Category updated successfully.")
+            # Update existing subject
+            if self.db.update_subject(self.subject_id, name, description):
+                QMessageBox.information(self, "Success", "Subject updated successfully.")
                 self.accept()
             else:
-                QMessageBox.critical(self, "Error", "Failed to update category.")
+                QMessageBox.critical(self, "Error", "Failed to update subject.")
         else:
-            # Add new category
+            # Add new subject
             if self.db.add_subject(name, description):
-                QMessageBox.information(self, "Success", "Category added successfully.")
+                QMessageBox.information(self, "Success", "Subject added successfully.")
                 self.accept()
             else:
-                QMessageBox.critical(self, "Error", "Failed to add category.")
+                QMessageBox.critical(self, "Error", "Failed to add subject.")
 
 
 class QuestionsView(QWidget):
@@ -998,21 +997,21 @@ class QuestionsView(QWidget):
         """Initialize the questions view UI."""
         layout = QVBoxLayout(self)
         
-        # Filter by category
+        # Filter by subject
         filter_layout = QHBoxLayout()
-        filter_label = QLabel("Filter by Category:")
+        filter_label = QLabel("Filter by Subject:")
         filter_layout.addWidget(filter_label)
         
-        self.category_filter = QComboBox()
-        self.category_filter.addItem("All Categories", None)
+        self.subject_filter = QComboBox()
+        self.subject_filter.addItem("All Subjects", None)
         
-        # Load categories
-        categories = self.db.get_all_subjects()
-        for category in categories:
-            self.category_filter.addItem(category['name'], category['id'])
+        # Load subjects
+        subjects = self.db.get_all_subjects()
+        for subject in subjects:
+            self.subject_filter.addItem(subject['name'], subject['id'])
         
-        self.category_filter.currentIndexChanged.connect(self.load_questions)
-        filter_layout.addWidget(self.category_filter)
+        self.subject_filter.currentIndexChanged.connect(self.load_questions)
+        filter_layout.addWidget(self.subject_filter)
         filter_layout.addStretch()
         
         layout.addLayout(filter_layout)
@@ -1038,7 +1037,7 @@ class QuestionsView(QWidget):
         # Questions table
         self.table = QTableWidget()
         self.table.setColumnCount(4)
-        self.table.setHorizontalHeaderLabels(["ID", "Category", "Question", "Type"])
+        self.table.setHorizontalHeaderLabels(["ID", "Subject", "Question", "Type"])
         self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
         self.table.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
         self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
@@ -1056,10 +1055,10 @@ class QuestionsView(QWidget):
         """Load questions from the database."""
         questions = self.db.get_all_questions()
         
-        # Filter by selected category
-        selected_category_id = self.category_filter.currentData()
-        if selected_category_id is not None:
-            questions = [q for q in questions if q['subject_id'] == selected_category_id]
+        # Filter by selected subject
+        selected_subject_id = self.subject_filter.currentData()
+        if selected_subject_id is not None:
+            questions = [q for q in questions if q['subject_id'] == selected_subject_id]
         
         self.table.setRowCount(0)
         for question in questions:
@@ -1147,18 +1146,18 @@ class QuestionDialog(QDialog):
         
         layout = QVBoxLayout(self)
         
-        # Category selection
-        category_layout = QHBoxLayout()
-        category_layout.addWidget(QLabel("Category:"))
-        self.category_combo = QComboBox()
+        # Subject selection
+        subject_layout = QHBoxLayout()
+        subject_layout.addWidget(QLabel("Subject:"))
+        self.subject_combo = QComboBox()
         
-        categories = self.db.get_all_subjects()
-        for category in categories:
-            self.category_combo.addItem(category['name'], category['id'])
+        subjects = self.db.get_all_subjects()
+        for subject in subjects:
+            self.subject_combo.addItem(subject['name'], subject['id'])
         
-        category_layout.addWidget(self.category_combo)
-        category_layout.addStretch()
-        layout.addLayout(category_layout)
+        subject_layout.addWidget(self.subject_combo)
+        subject_layout.addStretch()
+        layout.addLayout(subject_layout)
         
         # Question text
         layout.addWidget(QLabel("Question:"))
@@ -1214,10 +1213,10 @@ class QuestionDialog(QDialog):
             self.reject()
             return
         
-        # Set category
-        for i in range(self.category_combo.count()):
-            if self.category_combo.itemData(i) == question_data['subject_id']:
-                self.category_combo.setCurrentIndex(i)
+        # Set subject
+        for i in range(self.subject_combo.count()):
+            if self.subject_combo.itemData(i) == question_data['subject_id']:
+                self.subject_combo.setCurrentIndex(i)
                 break
         
         # Set question text
