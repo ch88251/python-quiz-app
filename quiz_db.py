@@ -37,11 +37,39 @@ class QuizDatabase:
             self.conn.close()
             self.conn = None
     
-    def get_all_questions(self, shuffle=True):
+    def get_all_subjects(self):
         """
-        Retrieve all quiz questions from the database.
+        Retrieve all subjects from the database.
+        
+        Returns:
+            List of subject dictionaries with id, name, and description
+        """
+        if not self.conn:
+            if not self.connect():
+                return []
+        
+        try:
+            cursor = self.conn.cursor(cursor_factory=RealDictCursor)
+            cursor.execute("""
+                SELECT id, name, description
+                FROM subjects
+                ORDER BY name
+            """)
+            
+            subjects = cursor.fetchall()
+            cursor.close()
+            return [dict(s) for s in subjects]
+            
+        except psycopg2.Error as e:
+            print(f"Database query error: {e}")
+            return []
+    
+    def get_questions_by_subject(self, subject_id, shuffle=True):
+        """
+        Retrieve quiz questions for a specific subject.
         
         Args:
+            subject_id: The ID of the subject to filter by
             shuffle: Whether to randomize the order of questions
         
         Returns:
@@ -54,12 +82,13 @@ class QuizDatabase:
         try:
             cursor = self.conn.cursor(cursor_factory=RealDictCursor)
             
-            # Get all questions
+            # Get questions for the specific subject
             cursor.execute("""
                 SELECT id, question_text, question_type
                 FROM questions
+                WHERE subject_id = %s
                 ORDER BY id
-            """)
+            """, (subject_id,))
             
             questions = cursor.fetchall()
             quiz_data = []
@@ -124,11 +153,12 @@ class QuizDatabase:
             print(f"Database query error: {e}")
             return 0
     
-    def add_question(self, question_text, question_type, options, correct_answers):
+    def add_question(self, subject_id, question_text, question_type, options, correct_answers):
         """
         Add a new question to the database.
         
         Args:
+            subject_id: The ID of the subject this question belongs to
             question_text: The question text
             question_type: Type of question ('multiple_choice' or 'multi_select')
             options: Dictionary of options {key: text}
@@ -146,10 +176,10 @@ class QuizDatabase:
             
             # Insert question
             cursor.execute("""
-                INSERT INTO questions (question_text, question_type)
-                VALUES (%s, %s)
+                INSERT INTO questions (subject_id, question_text, question_type)
+                VALUES (%s, %s, %s)
                 RETURNING id
-            """, (question_text, question_type))
+            """, (subject_id, question_text, question_type))
             
             question_id = cursor.fetchone()[0]
             

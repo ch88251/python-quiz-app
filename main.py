@@ -2,7 +2,7 @@ import sys
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QLabel, QPushButton, QRadioButton, 
                              QCheckBox, QButtonGroup, QMessageBox, QProgressBar,
-                             QMenuBar)
+                             QMenuBar, QComboBox)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QAction
 from quiz_db import QuizDatabase
@@ -16,8 +16,10 @@ class QuizApp(QMainWindow):
         self.score = 0
         self.user_answers = []
         self.db = QuizDatabase()
+        self.subjects = []
+        self.current_subject = None
         self.init_ui()
-        self.load_quiz()
+        self.load_subjects()
         
     def init_ui(self):
         """Initialize the user interface."""
@@ -33,6 +35,20 @@ class QuizApp(QMainWindow):
         main_layout = QVBoxLayout(central_widget)
         main_layout.setSpacing(20)
         main_layout.setContentsMargins(30, 30, 30, 30)
+        
+        # Subject selection dropdown
+        subject_layout = QHBoxLayout()
+        subject_label = QLabel("Select Subject:")
+        subject_label.setFont(QFont("Arial", 12))
+        subject_layout.addWidget(subject_label)
+        
+        self.subject_combo = QComboBox()
+        self.subject_combo.setMinimumHeight(35)
+        self.subject_combo.currentIndexChanged.connect(self.on_subject_changed)
+        subject_layout.addWidget(self.subject_combo)
+        subject_layout.addStretch()
+        
+        main_layout.addLayout(subject_layout)
         
         # Title label
         self.title_label = QLabel("Quiz Application")
@@ -121,6 +137,19 @@ class QuizApp(QMainWindow):
             QMenuBar {
                 background-color: lightgray;
             }
+            QComboBox {
+                background-color: white;
+                border: 2px solid #4CAF50;
+                border-radius: 5px;
+                padding: 5px;
+                font-size: 13px;
+            }
+            QComboBox:hover {
+                border: 2px solid #45a049;
+            }
+            QComboBox::drop-down {
+                border: none;
+            }
             QPushButton {
                 background-color: #4CAF50;
                 color: white;
@@ -188,8 +217,8 @@ class QuizApp(QMainWindow):
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
         msg.exec()
         
-    def load_quiz(self):
-        """Load quiz questions from PostgreSQL database and shuffle them."""
+    def load_subjects(self):
+        """Load available subjects from the database."""
         try:
             # Connect to database
             if not self.db.connect():
@@ -203,17 +232,70 @@ class QuizApp(QMainWindow):
                 )
                 sys.exit(1)
             
-            # Load questions from database
-            self.quiz_data = self.db.get_all_questions(shuffle=True)
+            # Load subjects from database
+            self.subjects = self.db.get_all_subjects()
             
-            if not self.quiz_data:
+            if not self.subjects:
                 QMessageBox.critical(
                     self,
                     "No Data",
-                    "No quiz questions found in the database.\n\n"
+                    "No subjects found in the database.\n\n"
                     "Please run: python migrate_to_postgres.py"
                 )
                 sys.exit(1)
+            
+            # Populate subject combo box
+            self.subject_combo.blockSignals(True)  # Prevent triggering on_subject_changed
+            for subject in self.subjects:
+                self.subject_combo.addItem(subject['name'], subject['id'])
+            self.subject_combo.blockSignals(False)
+            
+            # Automatically select first subject
+            if self.subjects:
+                self.on_subject_changed(0)
+            
+        except Exception as e:
+            QMessageBox.critical(
+                self, 
+                "Error", 
+                f"Failed to load subjects:\n{str(e)}"
+            )
+            sys.exit(1)
+    
+    def on_subject_changed(self, index):
+        """Handle subject selection change."""
+        if index < 0:
+            return
+        
+        subject_id = self.subject_combo.currentData()
+        subject_name = self.subject_combo.currentText()
+        
+        # Update title label
+        self.title_label.setText(f"{subject_name} Quiz")
+        
+        # Store current subject
+        self.current_subject = subject_id
+        
+        # Load questions for this subject
+        self.load_quiz()
+    
+    def load_quiz(self):
+        """Load quiz questions for the current subject from PostgreSQL database."""
+        if self.current_subject is None:
+            return
+        
+        try:
+            # Load questions from database for current subject
+            self.quiz_data = self.db.get_questions_by_subject(self.current_subject, shuffle=True)
+            
+            if not self.quiz_data:
+                QMessageBox.warning(
+                    self,
+                    "No Questions",
+                    f"No questions found for this subject.\n\n"
+                    "Please add questions to the database."
+                )
+                return
             
             # Initialize user_answers list
             self.user_answers = [None] * len(self.quiz_data)
@@ -576,8 +658,9 @@ class QuizApp(QMainWindow):
         self.current_question = 0
         self.score = 0
         
-        # Shuffle questions again
-        random.shuffle(self.quiz_data)
+        # Reload questions for current subject (shuffled)
+        if self.current_subject:
+            self.quiz_data = self.db.get_questions_by_subject(self.current_subject, shuffle=True)
         
         # Reset answers
         self.user_answers = [None] * len(self.quiz_data)
