@@ -458,16 +458,22 @@ class QuizApp(QMainWindow):
             self.next_button.clicked.connect(self.finish_review)
         else:
             self.next_button.setText("Next →")
+            # Disconnect any existing connections before reconnecting
+            # PyQt6's disconnect() raises TypeError if no connections exist
             try:
                 self.next_button.disconnect()
             except TypeError:
+                # No existing connections, which is fine
                 pass
             self.next_button.clicked.connect(self.next_review_question)
         
         if self.current_question > 0:
+            # Disconnect any existing connections before reconnecting
+            # PyQt6's disconnect() raises TypeError if no connections exist
             try:
                 self.prev_button.disconnect()
             except TypeError:
+                # No existing connections, which is fine
                 pass
             self.prev_button.clicked.connect(self.prev_review_question)
     
@@ -518,10 +524,13 @@ class QuizApp(QMainWindow):
         self.instruction_label.setStyleSheet("color: #666;")
         
         # Reconnect buttons to normal mode
+        # Disconnect any existing connections before reconnecting
+        # PyQt6's disconnect() raises TypeError if no connections exist
         try:
             self.next_button.disconnect()
             self.prev_button.disconnect()
         except TypeError:
+            # No existing connections, which is fine
             pass
         
         self.next_button.clicked.connect(self.next_question)
