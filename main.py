@@ -1240,7 +1240,7 @@ class QuestionDialog(QDialog):
         
     def save_question(self):
         """Save the question to the database."""
-        subject_id = self.category_combo.currentData()
+        subject_id = self.subject_combo.currentData()
         question_text = self.question_edit.toPlainText().strip()
         question_type = self.type_combo.currentData()
         
