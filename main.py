@@ -145,12 +145,29 @@ class QuizApp(QMainWindow):
                 border-radius: 5px;
                 padding: 5px;
                 font-size: 13px;
+                color: black;
             }
             QComboBox:hover {
                 border: 2px solid #45a049;
             }
             QComboBox::drop-down {
                 border: none;
+            }
+            QComboBox QAbstractItemView {
+                background-color: white;
+                color: black;
+                selection-background-color: #4CAF50;
+                selection-color: white;
+                border: 1px solid #4CAF50;
+                padding: 5px;
+            }
+            QComboBox QAbstractItemView::item {
+                padding: 5px;
+                min-height: 25px;
+            }
+            QComboBox QAbstractItemView::item:hover {
+                background-color: #45a049;
+                color: white;
             }
             QPushButton {
                 background-color: #4CAF50;
