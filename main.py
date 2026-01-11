@@ -145,12 +145,29 @@ class QuizApp(QMainWindow):
                 border-radius: 5px;
                 padding: 5px;
                 font-size: 13px;
+                color: black;
             }
             QComboBox:hover {
                 border: 2px solid #45a049;
             }
             QComboBox::drop-down {
                 border: none;
+            }
+            QComboBox QAbstractItemView {
+                background-color: white;
+                color: black;
+                selection-background-color: #4CAF50;
+                selection-color: white;
+                border: 1px solid #4CAF50;
+                padding: 5px;
+            }
+            QComboBox QAbstractItemView::item {
+                padding: 5px;
+                min-height: 25px;
+            }
+            QComboBox QAbstractItemView::item:hover {
+                background-color: #45a049;
+                color: white;
             }
             QPushButton {
                 background-color: #4CAF50;
@@ -197,10 +214,15 @@ class QuizApp(QMainWindow):
         # Admin menu
         admin_menu = right_menubar.addMenu("Admin")
         
-        # Data Management action
-        data_mgmt_action = QAction("Data Management", self)
-        data_mgmt_action.triggered.connect(self.show_data_management)
-        admin_menu.addAction(data_mgmt_action)
+        # Subject Management action
+        subject_mgmt_action = QAction("Subject Management", self)
+        subject_mgmt_action.triggered.connect(self.show_subject_management)
+        admin_menu.addAction(subject_mgmt_action)
+        
+        # Question Management action
+        question_mgmt_action = QAction("Question Management", self)
+        question_mgmt_action.triggered.connect(self.show_question_management)
+        admin_menu.addAction(question_mgmt_action)
         
         # Help menu
         help_menu = right_menubar.addMenu("Help")
@@ -229,12 +251,18 @@ class QuizApp(QMainWindow):
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
         msg.exec()
     
-    def show_data_management(self):
-        """Display the Data Management dialog."""
-        dialog = DataManagementDialog(self.db, self)
+    def show_subject_management(self):
+        """Display the Subject Management dialog."""
+        dialog = SubjectManagementDialog(self.db, self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
-            # Reload subjects if they were modified
+            # Reload subjects if they were modified (main window displays subjects in dropdown)
             self.load_subjects()
+    
+    def show_question_management(self):
+        """Display the Question Management dialog."""
+        dialog = QuestionManagementDialog(self.db, self)
+        # No need to reload after question management since main window doesn't display questions
+        dialog.exec()
         
     def load_subjects(self):
         """Load available subjects from the database."""
@@ -716,8 +744,8 @@ class QuizApp(QMainWindow):
         event.accept()
 
 
-class DataManagementDialog(QDialog):
-    """Dialog for managing categories, questions, and answers."""
+class SubjectManagementDialog(QDialog):
+    """Dialog for managing subjects/categories."""
     
     def __init__(self, db, parent=None):
         super().__init__(parent)
@@ -725,80 +753,61 @@ class DataManagementDialog(QDialog):
         self.init_ui()
         
     def init_ui(self):
-        """Initialize the data management UI."""
-        self.setWindowTitle("Data Management")
+        """Initialize the subject management UI."""
+        self.setWindowTitle("Subject Management")
         self.setGeometry(200, 200, 900, 600)
         
         layout = QVBoxLayout(self)
         
         # Title
-        title = QLabel("Data Management")
+        title = QLabel("Subject Management")
         title_font = QFont()
         title_font.setPointSize(16)
         title_font.setBold(True)
         title.setFont(title_font)
         layout.addWidget(title)
         
-        # Tab buttons for Categories and Questions
-        tab_layout = QHBoxLayout()
-        
-        self.categories_button = QPushButton("Manage Categories")
-        self.categories_button.clicked.connect(self.show_categories)
-        self.categories_button.setCheckable(True)
-        self.categories_button.setChecked(True)
-        tab_layout.addWidget(self.categories_button)
-        
-        self.questions_button = QPushButton("Manage Questions")
-        self.questions_button.clicked.connect(self.show_questions)
-        self.questions_button.setCheckable(True)
-        tab_layout.addWidget(self.questions_button)
-        
-        tab_layout.addStretch()
-        layout.addLayout(tab_layout)
-        
-        # Container for different views
-        self.view_container = QWidget()
-        self.view_layout = QVBoxLayout(self.view_container)
-        layout.addWidget(self.view_container)
+        # Subject management view
+        subjects_widget = CategoriesView(self.db, self)
+        layout.addWidget(subjects_widget)
         
         # Close button
         button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
         button_box.rejected.connect(self.accept)
         layout.addWidget(button_box)
+
+
+class QuestionManagementDialog(QDialog):
+    """Dialog for managing questions."""
+    
+    def __init__(self, db, parent=None):
+        super().__init__(parent)
+        self.db = db
+        self.init_ui()
         
-        # Show categories by default
-        self.show_categories()
+    def init_ui(self):
+        """Initialize the question management UI."""
+        self.setWindowTitle("Question Management")
+        self.setGeometry(200, 200, 900, 600)
         
-    def show_categories(self):
-        """Show the categories management view."""
-        self.categories_button.setChecked(True)
-        self.questions_button.setChecked(False)
+        layout = QVBoxLayout(self)
         
-        # Clear current view
-        self.clear_view()
+        # Title
+        title = QLabel("Question Management")
+        title_font = QFont()
+        title_font.setPointSize(16)
+        title_font.setBold(True)
+        title.setFont(title_font)
+        layout.addWidget(title)
         
-        # Create categories view
-        categories_widget = CategoriesView(self.db, self)
-        self.view_layout.addWidget(categories_widget)
-        
-    def show_questions(self):
-        """Show the questions management view."""
-        self.categories_button.setChecked(False)
-        self.questions_button.setChecked(True)
-        
-        # Clear current view
-        self.clear_view()
-        
-        # Create questions view
+        # Question management view
         questions_widget = QuestionsView(self.db, self)
-        self.view_layout.addWidget(questions_widget)
+        layout.addWidget(questions_widget)
         
-    def clear_view(self):
-        """Clear the current view."""
-        while self.view_layout.count():
-            item = self.view_layout.takeAt(0)
-            if item.widget():
-                item.widget().deleteLater()
+        # Close button
+        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
+        button_box.rejected.connect(self.accept)
+        layout.addWidget(button_box)
 
 
 class CategoriesView(QWidget):
