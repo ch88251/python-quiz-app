@@ -26,8 +26,8 @@ class QuizApp(QMainWindow):
     def init_ui(self):
         """Initialize the user interface."""
         self.setWindowTitle("Quiz Application")
-        self.setGeometry(100, 100, 1200, 800)
-        self.setFixedSize(1200, 800)
+        self.setGeometry(100, 100, 1200, 900)
+        self.setFixedSize(1200, 900)
         
         # Create menu bar
         self.create_menu_bar()
@@ -95,10 +95,11 @@ class QuizApp(QMainWindow):
         self.instruction_label.setStyleSheet("color: #666;")
         main_layout.addWidget(self.instruction_label)
         
-        # Options container
+        # Options container - allow container to expand
         self.options_widget = QWidget()
         self.options_layout = QVBoxLayout(self.options_widget)
         self.options_layout.setSpacing(10)
+        self.options_layout.addStretch()
         main_layout.addWidget(self.options_widget)
         
         # Button group for radio buttons (single choice)
@@ -403,9 +404,20 @@ class QuizApp(QMainWindow):
             # Create checkboxes for multi-select
             self.checkboxes = []
             for key in sorted(options.keys()):
-                checkbox = QCheckBox(f"{key}. {options[key]}")
+                # Create a horizontal layout for each option
+                option_layout = QHBoxLayout()
+                
+                checkbox = QCheckBox(f"{key}.")
+                label = QLabel(options[key])
+                label.setWordWrap(True)
+                label.setFont(QFont("Arial", 16))
+                label.mousePressEvent = lambda event, cb=checkbox: cb.setChecked(not cb.isChecked())
+                
+                option_layout.addWidget(checkbox)
+                option_layout.addWidget(label, 1)  # Stretch factor 1 to take remaining space
+                
                 self.checkboxes.append((key, checkbox))
-                self.options_layout.addWidget(checkbox)
+                self.options_layout.addLayout(option_layout)
                 
                 # Restore previous answer if any
                 if self.user_answers[self.current_question]:
@@ -414,9 +426,20 @@ class QuizApp(QMainWindow):
         else:
             # Create radio buttons for single-select
             for key in sorted(options.keys()):
-                radio = QRadioButton(f"{key}. {options[key]}")
+                # Create a horizontal layout for each option
+                option_layout = QHBoxLayout()
+                
+                radio = QRadioButton(f"{key}.")
+                label = QLabel(options[key])
+                label.setWordWrap(True)
+                label.setFont(QFont("Arial", 16))
+                label.mousePressEvent = lambda event, rb=radio: rb.setChecked(True)
+                
+                option_layout.addWidget(radio)
+                option_layout.addWidget(label, 1)  # Stretch factor 1 to take remaining space
+                
                 self.radio_group.addButton(radio)
-                self.options_layout.addWidget(radio)
+                self.options_layout.addLayout(option_layout)
                 
                 # Restore previous answer if any
                 if self.user_answers[self.current_question]:
@@ -616,24 +639,42 @@ class QuizApp(QMainWindow):
         if is_multi_select:
             self.checkboxes = []
             for key in sorted(options.keys()):
-                checkbox = QCheckBox(f"{key}. {options[key]}")
+                # Create a horizontal layout for each option
+                option_layout = QHBoxLayout()
+                
+                checkbox = QCheckBox(f"{key}.")
                 checkbox.setEnabled(False)
+                
+                label = QLabel(options[key])
+                label.setWordWrap(True)
+                label.setFont(QFont("Arial", 16))
                 
                 if key in user_answer:
                     checkbox.setChecked(True)
                 
                 # Highlight correct answers
                 if key in correct_answer:
-                    checkbox.setStyleSheet("color: green; font-weight: bold;")
+                    label.setStyleSheet("color: green; font-weight: bold;")
                 elif key in user_answer:
-                    checkbox.setStyleSheet("color: red;")
+                    label.setStyleSheet("color: red;")
+                
+                option_layout.addWidget(checkbox)
+                option_layout.addWidget(label, 1)  # Stretch factor 1 to take remaining space
                 
                 self.checkboxes.append((key, checkbox))
-                self.options_layout.addWidget(checkbox)
+                self.options_layout.addLayout(option_layout)
         else:
             for key in sorted(options.keys()):
-                radio = QRadioButton(f"{key}. {options[key]}")
+                # Create a horizontal layout for each option
+                option_layout = QHBoxLayout()
+                
+                radio = QRadioButton(f"{key}.")
                 radio.setEnabled(False)
+                
+                label = QLabel(options[key])
+                label.setWordWrap(True)
+                label.setFont(QFont("Arial", 16))
+                
                 self.radio_group.addButton(radio)
                 
                 if key in user_answer:
@@ -641,9 +682,14 @@ class QuizApp(QMainWindow):
                 
                 # Highlight correct answer
                 if key in correct_answer:
-                    radio.setStyleSheet("color: green; font-weight: bold;")
+                    label.setStyleSheet("color: green; font-weight: bold;")
                 elif key in user_answer:
-                    radio.setStyleSheet("color: red;")
+                    label.setStyleSheet("color: red;")
+                
+                option_layout.addWidget(radio)
+                option_layout.addWidget(label, 1)  # Stretch factor 1 to take remaining space
+                
+                self.options_layout.addLayout(option_layout)
                 
                 self.options_layout.addWidget(radio)
         
