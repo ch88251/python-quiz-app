@@ -460,14 +460,14 @@ class QuizApp(QMainWindow):
             self.next_button.setText("Next →")
             try:
                 self.next_button.disconnect()
-            except:
+            except TypeError:
                 pass
             self.next_button.clicked.connect(self.next_review_question)
         
         if self.current_question > 0:
             try:
                 self.prev_button.disconnect()
-            except:
+            except TypeError:
                 pass
             self.prev_button.clicked.connect(self.prev_review_question)
     
@@ -521,7 +521,7 @@ class QuizApp(QMainWindow):
         try:
             self.next_button.disconnect()
             self.prev_button.disconnect()
-        except:
+        except TypeError:
             pass
         
         self.next_button.clicked.connect(self.next_question)
