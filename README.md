@@ -1,15 +1,15 @@
-# Python Quiz App
+# Quiz Desktop Application
 
-A comprehensive quiz application with both Command-Line Interface (CLI) and Graphical User Interface (GUI) versions using PyQt6.
+A quiz application with a Graphical User Interface (GUI) using PyQt6 and PostgreSQL database backend.
 
 ## Features
 
-- 📚 Multiple-choice questions from a JSON database
-- ✅ Support for single and multi-select questions
-- 🔀 Random question shuffling for each quiz session
-- 📊 Score tracking and performance feedback
-- 🎨 Modern graphical interface (GUI version)
-- 💻 Traditional command-line interface (CLI version)
+- Multiple-choice questions from PostgreSQL database
+- Support for single and multi-select questions
+- Random question shuffling for each quiz session
+- Score tracking and performance feedback
+- Modern graphical interface
+- PostgreSQL database backend with Docker
 
 ### GUI-Specific Features
 
@@ -25,59 +25,70 @@ A comprehensive quiz application with both Command-Line Interface (CLI) and Grap
 ### Prerequisites
 
 - Python 3.8 or higher
+- Docker and Docker Compose
 
-### Install Dependencies
+### Quick Setup
 
+Run the automated setup script:
+
+```bash
+./setup_postgres.sh
+```
+
+This will:
+1. Install Python dependencies
+2. Start PostgreSQL in Docker
+3. Migrate data from quiz.json to PostgreSQL
+4. Verify the setup
+
+### Manual Setup
+
+1. Install Python dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-This will install:
-- PyQt6 (for the GUI version)
+2. Start PostgreSQL container:
+```bash
+cd db
+docker-compose up -d
+cd ..
+```
+
+3. Run migration:
+```bash
+python migrate_to_postgres.py
+```
+
+4. Verify setup (optional):
+```bash
+python verify_database.py
+```
 
 ## Usage
-
-### GUI Version (Recommended)
-
-Run the graphical interface:
 
 ```bash
 python quiz_gui.py
 ```
 
-#### GUI Features:
+## PostgreSQL Migration
 
-1. **Question Display**: Each question is clearly displayed with its number and total count
-2. **Answer Selection**: 
-   - Radio buttons for single-choice questions
-   - Checkboxes for multi-choice questions
-3. **Navigation**:
-   - Use "Next" and "Previous" buttons to navigate between questions
-   - Your answers are automatically saved when you navigate
-4. **Submit**: Click "Submit Quiz" on the last question
-5. **Results**: View your score with performance feedback
-6. **Review**: Option to review all answers with correct/incorrect indicators
-7. **Restart**: Take the quiz again with shuffled questions
-
-### CLI Version
-
-Run the command-line interface:
-
-```bash
-python quiz.py
-```
-
-#### CLI Features:
-
-1. Questions are presented one at a time
-2. Enter your answer (e.g., 'A', 'B', 'C', or 'D')
-3. For multi-select questions, enter comma-separated answers (e.g., 'A,C,D')
-4. Immediate feedback after each question
-5. Final score displayed at the end
+The application now uses PostgreSQL instead of JSON files. See [POSTGRES_MIGRATION.md](POSTGRES_MIGRATION.md) for detailed information about:
+- Database schema
+- Migration process
+- Database management
+- API usage
+- Troubleshooting
 
 ## Quiz Format
 
-The quiz questions are stored in `quiz.json` with the following format:
+Questions are now stored in PostgreSQL with the following schema:
+
+- **questions** table: question text and type
+- **options** table: answer choices for each question
+- **correct_answers** table: correct answer keys
+
+The original `quiz.json` format is still supported for migration purposes.
 
 ```json
 {
@@ -107,47 +118,68 @@ For questions with multiple correct answers, use an array:
 
 ## Screenshots
 
-### GUI Version
+## Database Management
 
-The GUI provides:
-- A clean, modern interface
-- Progress bar showing quiz completion
-- Easy navigation between questions
-- Visual feedback for correct/incorrect answers during review
-- Responsive design that works on different screen sizes
+### Start/Stop PostgreSQL
 
-## File Structure
-
+```bash
+cd db
+docker-compose start   # Start
+docker-compose stop    # Stop
+docker-compose restart # Restart
 ```
-python-quiz-app/
-├── quiz.py           # CLI version of the quiz
-├── quiz_gui.py       # GUI version of the quiz (PyQt6)
-├── quiz.json         # Quiz questions database
-├── requirements.txt  # Python dependencies
-├── README.md         # This file
-└── .gitignore       # Git ignore file
+
+### View Database Logs
+
+```bash
+cd db
+docker-compose logs -f
+```
+
+### Connect to Database
+
+```bash
+docker exec -it quiz_postgres psql -U quiz_user -d quiz_db
 ```
 
 ## Development
 
 ### Adding New Questions
 
-Edit `quiz.json` to add new questions following the format shown above.
+You can add questions programmatically using the QuizDatabase API:
 
-### Customization
+```python
+from quiz_db import QuizDatabase
 
-#### GUI Styling
+db = QuizDatabase()
+db.connect()
 
-The GUI uses PyQt6 stylesheets which can be customized in the `init_ui()` method of the `QuizApp` class in `quiz_gui.py`.
+db.add_question(
+    question_text="What is Python?",
+    question_type="multiple_choice",
+    options={
+        "A": "A programming language",
+        "B": "A snake",
+        "C": "A framework",
+        "D": "An IDE"
+    },
+    correct_answers=["A"]
+)
 
-#### CLI Behavior
+db.close()
+```
 
-Modify `quiz.py` to change how questions are displayed or how answers are validated in the command-line version.
+Or edit `quiz.json` and re-run the migration script.
 
-## License
+## Files Overview
 
-This project is open source and available for educational purposes.
+- `quiz_gui.py` - Main GUI application
+- `quiz_db.py` - Database interface module
+- `migrate_to_postgres.py` - Migration script from JSON to PostgreSQL
+- `verify_database.py` - Database verification script
+- `setup_postgres.sh` - Automated setup script
+- `db/init.sql` - Database schema initialization
+- `db/docker-compose.yml` - Docker configuration for PostgreSQL
+- `quiz.json` - Original quiz data (used for migration)
+- `requirements.txt` - Python dependencies
 
-## Contributing
-
-Feel free to submit issues and enhancement requests!

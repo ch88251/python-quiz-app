@@ -1,12 +1,11 @@
 import sys
-import json
-import random
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QLabel, QPushButton, QRadioButton, 
                              QCheckBox, QButtonGroup, QMessageBox, QProgressBar,
                              QMenuBar)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QAction
+from quiz_db import QuizDatabase
 
 
 class QuizApp(QMainWindow):
@@ -16,12 +15,13 @@ class QuizApp(QMainWindow):
         self.current_question = 0
         self.score = 0
         self.user_answers = []
+        self.db = QuizDatabase()
         self.init_ui()
         self.load_quiz()
         
     def init_ui(self):
         """Initialize the user interface."""
-        self.setWindowTitle("Python Quiz App")
+        self.setWindowTitle("Quiz Application")
         self.setGeometry(100, 100, 800, 600)
         
         # Create menu bar
@@ -35,7 +35,7 @@ class QuizApp(QMainWindow):
         main_layout.setContentsMargins(30, 30, 30, 30)
         
         # Title label
-        self.title_label = QLabel("Python Quiz App")
+        self.title_label = QLabel("Quiz Application")
         title_font = QFont()
         title_font.setPointSize(18)
         title_font.setBold(True)
@@ -118,6 +118,9 @@ class QuizApp(QMainWindow):
             QMainWindow {
                 background-color: #f5f5f5;
             }
+            QMenuBar {
+                background-color: lightgray;
+            }
             QPushButton {
                 background-color: #4CAF50;
                 color: white;
@@ -186,14 +189,31 @@ class QuizApp(QMainWindow):
         msg.exec()
         
     def load_quiz(self):
-        """Load quiz questions from JSON file and shuffle them."""
+        """Load quiz questions from PostgreSQL database and shuffle them."""
         try:
-            with open("quiz.json", "r") as file:
-                quiz_json = json.load(file)
-                self.quiz_data = quiz_json["quiz"]
+            # Connect to database
+            if not self.db.connect():
+                QMessageBox.critical(
+                    self, 
+                    "Database Error", 
+                    "Could not connect to PostgreSQL database.\n\n"
+                    "Please ensure:\n"
+                    "1. Docker container is running (cd db && docker-compose up -d)\n"
+                    "2. Database has been migrated (python migrate_to_postgres.py)"
+                )
+                sys.exit(1)
             
-            # Shuffle questions
-            random.shuffle(self.quiz_data)
+            # Load questions from database
+            self.quiz_data = self.db.get_all_questions(shuffle=True)
+            
+            if not self.quiz_data:
+                QMessageBox.critical(
+                    self,
+                    "No Data",
+                    "No quiz questions found in the database.\n\n"
+                    "Please run: python migrate_to_postgres.py"
+                )
+                sys.exit(1)
             
             # Initialize user_answers list
             self.user_answers = [None] * len(self.quiz_data)
@@ -204,11 +224,12 @@ class QuizApp(QMainWindow):
             # Display first question
             self.display_question()
             
-        except FileNotFoundError:
-            QMessageBox.critical(self, "Error", "quiz.json file not found!")
-            sys.exit(1)
-        except json.JSONDecodeError:
-            QMessageBox.critical(self, "Error", "Invalid JSON format in quiz.json!")
+        except Exception as e:
+            QMessageBox.critical(
+                self, 
+                "Error", 
+                f"Failed to load quiz questions:\n{str(e)}"
+            )
             sys.exit(1)
     
     def display_question(self):
@@ -583,6 +604,12 @@ class QuizApp(QMainWindow):
         
         # Display first question
         self.display_question()
+    
+    def closeEvent(self, event):
+        """Clean up database connection when closing the application."""
+        if hasattr(self, 'db') and self.db:
+            self.db.close()
+        event.accept()
 
 
 def main():
