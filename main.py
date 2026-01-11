@@ -2,7 +2,9 @@ import sys
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QLabel, QPushButton, QRadioButton, 
                              QCheckBox, QButtonGroup, QMessageBox, QProgressBar,
-                             QMenuBar, QComboBox)
+                             QMenuBar, QComboBox, QDialog, QTableWidget, 
+                             QTableWidgetItem, QLineEdit, QTextEdit, QDialogButtonBox,
+                             QFormLayout, QHeaderView, QAbstractItemView)
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QAction
 from quiz_db import QuizDatabase
@@ -188,9 +190,19 @@ class QuizApp(QMainWindow):
         exit_action.triggered.connect(self.close)
         app_menu.addAction(exit_action)
         
-        # Create a separate menu bar for the Help menu on the right
-        # Using setCornerWidget to position Help menu on the right
+        # Create a separate menu bar for the Admin and Help menus on the right
+        # Using setCornerWidget to position Admin and Help menus on the right
         right_menubar = QMenuBar(menubar)
+        
+        # Admin menu
+        admin_menu = right_menubar.addMenu("Admin")
+        
+        # Data Management action
+        data_mgmt_action = QAction("Data Management", self)
+        data_mgmt_action.triggered.connect(self.show_data_management)
+        admin_menu.addAction(data_mgmt_action)
+        
+        # Help menu
         help_menu = right_menubar.addMenu("Help")
         
         # About action
@@ -216,6 +228,13 @@ class QuizApp(QMainWindow):
         msg.setText(about_text)
         msg.setStandardButtons(QMessageBox.StandardButton.Ok)
         msg.exec()
+    
+    def show_data_management(self):
+        """Display the Data Management dialog."""
+        dialog = DataManagementDialog(self.db, self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            # Reload subjects if they were modified
+            self.load_subjects()
         
     def load_subjects(self):
         """Load available subjects from the database."""
@@ -695,6 +714,569 @@ class QuizApp(QMainWindow):
         if hasattr(self, 'db') and self.db:
             self.db.close()
         event.accept()
+
+
+class DataManagementDialog(QDialog):
+    """Dialog for managing categories, questions, and answers."""
+    
+    def __init__(self, db, parent=None):
+        super().__init__(parent)
+        self.db = db
+        self.init_ui()
+        
+    def init_ui(self):
+        """Initialize the data management UI."""
+        self.setWindowTitle("Data Management")
+        self.setGeometry(200, 200, 900, 600)
+        
+        layout = QVBoxLayout(self)
+        
+        # Title
+        title = QLabel("Data Management")
+        title_font = QFont()
+        title_font.setPointSize(16)
+        title_font.setBold(True)
+        title.setFont(title_font)
+        layout.addWidget(title)
+        
+        # Tab buttons for Categories and Questions
+        tab_layout = QHBoxLayout()
+        
+        self.categories_button = QPushButton("Manage Categories")
+        self.categories_button.clicked.connect(self.show_categories)
+        self.categories_button.setCheckable(True)
+        self.categories_button.setChecked(True)
+        tab_layout.addWidget(self.categories_button)
+        
+        self.questions_button = QPushButton("Manage Questions")
+        self.questions_button.clicked.connect(self.show_questions)
+        self.questions_button.setCheckable(True)
+        tab_layout.addWidget(self.questions_button)
+        
+        tab_layout.addStretch()
+        layout.addLayout(tab_layout)
+        
+        # Container for different views
+        self.view_container = QWidget()
+        self.view_layout = QVBoxLayout(self.view_container)
+        layout.addWidget(self.view_container)
+        
+        # Close button
+        button_box = QDialogButtonBox(QDialogButtonBox.StandardButton.Close)
+        button_box.rejected.connect(self.accept)
+        layout.addWidget(button_box)
+        
+        # Show categories by default
+        self.show_categories()
+        
+    def show_categories(self):
+        """Show the categories management view."""
+        self.categories_button.setChecked(True)
+        self.questions_button.setChecked(False)
+        
+        # Clear current view
+        self.clear_view()
+        
+        # Create categories view
+        categories_widget = CategoriesView(self.db, self)
+        self.view_layout.addWidget(categories_widget)
+        
+    def show_questions(self):
+        """Show the questions management view."""
+        self.categories_button.setChecked(False)
+        self.questions_button.setChecked(True)
+        
+        # Clear current view
+        self.clear_view()
+        
+        # Create questions view
+        questions_widget = QuestionsView(self.db, self)
+        self.view_layout.addWidget(questions_widget)
+        
+    def clear_view(self):
+        """Clear the current view."""
+        while self.view_layout.count():
+            item = self.view_layout.takeAt(0)
+            if item.widget():
+                item.widget().deleteLater()
+
+
+class CategoriesView(QWidget):
+    """Widget for managing categories/subjects."""
+    
+    def __init__(self, db, parent=None):
+        super().__init__(parent)
+        self.db = db
+        self.parent_dialog = parent
+        self.init_ui()
+        self.load_categories()
+        
+    def init_ui(self):
+        """Initialize the categories view UI."""
+        layout = QVBoxLayout(self)
+        
+        # Action buttons
+        button_layout = QHBoxLayout()
+        
+        add_button = QPushButton("Add Category")
+        add_button.clicked.connect(self.add_category)
+        button_layout.addWidget(add_button)
+        
+        edit_button = QPushButton("Edit Category")
+        edit_button.clicked.connect(self.edit_category)
+        button_layout.addWidget(edit_button)
+        
+        delete_button = QPushButton("Delete Category")
+        delete_button.clicked.connect(self.delete_category)
+        button_layout.addWidget(delete_button)
+        
+        button_layout.addStretch()
+        layout.addLayout(button_layout)
+        
+        # Categories table
+        self.table = QTableWidget()
+        self.table.setColumnCount(3)
+        self.table.setHorizontalHeaderLabels(["ID", "Name", "Description"])
+        self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.table.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        
+        # Set column widths
+        header = self.table.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        
+        layout.addWidget(self.table)
+        
+    def load_categories(self):
+        """Load categories from the database."""
+        categories = self.db.get_all_subjects()
+        
+        self.table.setRowCount(0)
+        for category in categories:
+            row = self.table.rowCount()
+            self.table.insertRow(row)
+            
+            self.table.setItem(row, 0, QTableWidgetItem(str(category['id'])))
+            self.table.setItem(row, 1, QTableWidgetItem(category['name']))
+            self.table.setItem(row, 2, QTableWidgetItem(category.get('description', '')))
+            
+    def add_category(self):
+        """Add a new category."""
+        dialog = CategoryDialog(self.db, self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            self.load_categories()
+            
+    def edit_category(self):
+        """Edit the selected category."""
+        selected_rows = self.table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a category to edit.")
+            return
+            
+        row = selected_rows[0].row()
+        category_id = int(self.table.item(row, 0).text())
+        category_name = self.table.item(row, 1).text()
+        category_desc = self.table.item(row, 2).text()
+        
+        dialog = CategoryDialog(self.db, self, category_id, category_name, category_desc)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            self.load_categories()
+            
+    def delete_category(self):
+        """Delete the selected category."""
+        selected_rows = self.table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a category to delete.")
+            return
+            
+        row = selected_rows[0].row()
+        category_id = int(self.table.item(row, 0).text())
+        category_name = self.table.item(row, 1).text()
+        
+        # Confirm deletion
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Icon.Warning)
+        msg.setWindowTitle("Confirm Deletion")
+        msg.setText(f"Are you sure you want to delete the category '{category_name}'?")
+        msg.setInformativeText("This will also delete all associated questions and answers!")
+        msg.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        msg.setDefaultButton(QMessageBox.StandardButton.No)
+        
+        if msg.exec() == QMessageBox.StandardButton.Yes:
+            if self.db.delete_subject(category_id):
+                QMessageBox.information(self, "Success", "Category deleted successfully.")
+                self.load_categories()
+            else:
+                QMessageBox.critical(self, "Error", "Failed to delete category.")
+
+
+class CategoryDialog(QDialog):
+    """Dialog for adding or editing a category."""
+    
+    def __init__(self, db, parent=None, category_id=None, name="", description=""):
+        super().__init__(parent)
+        self.db = db
+        self.category_id = category_id
+        self.is_edit = category_id is not None
+        self.init_ui(name, description)
+        
+    def init_ui(self, name, description):
+        """Initialize the category dialog UI."""
+        self.setWindowTitle("Edit Category" if self.is_edit else "Add Category")
+        self.setGeometry(300, 300, 400, 200)
+        
+        layout = QFormLayout(self)
+        
+        # Name field
+        self.name_edit = QLineEdit(name)
+        layout.addRow("Name:", self.name_edit)
+        
+        # Description field
+        self.description_edit = QTextEdit(description)
+        self.description_edit.setMaximumHeight(100)
+        layout.addRow("Description:", self.description_edit)
+        
+        # Buttons
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel
+        )
+        button_box.accepted.connect(self.save_category)
+        button_box.rejected.connect(self.reject)
+        layout.addRow(button_box)
+        
+    def save_category(self):
+        """Save the category to the database."""
+        name = self.name_edit.text().strip()
+        description = self.description_edit.toPlainText().strip()
+        
+        if not name:
+            QMessageBox.warning(self, "Validation Error", "Category name is required.")
+            return
+            
+        if self.is_edit:
+            # Update existing category
+            if self.db.update_subject(self.category_id, name, description):
+                QMessageBox.information(self, "Success", "Category updated successfully.")
+                self.accept()
+            else:
+                QMessageBox.critical(self, "Error", "Failed to update category.")
+        else:
+            # Add new category
+            if self.db.add_subject(name, description):
+                QMessageBox.information(self, "Success", "Category added successfully.")
+                self.accept()
+            else:
+                QMessageBox.critical(self, "Error", "Failed to add category.")
+
+
+class QuestionsView(QWidget):
+    """Widget for managing questions."""
+    
+    # Constants for question text display
+    MAX_QUESTION_LENGTH = 100
+    TRUNCATE_LENGTH = 97
+    
+    def __init__(self, db, parent=None):
+        super().__init__(parent)
+        self.db = db
+        self.parent_dialog = parent
+        self.init_ui()
+        self.load_questions()
+        
+    def init_ui(self):
+        """Initialize the questions view UI."""
+        layout = QVBoxLayout(self)
+        
+        # Filter by category
+        filter_layout = QHBoxLayout()
+        filter_label = QLabel("Filter by Category:")
+        filter_layout.addWidget(filter_label)
+        
+        self.category_filter = QComboBox()
+        self.category_filter.addItem("All Categories", None)
+        
+        # Load categories
+        categories = self.db.get_all_subjects()
+        for category in categories:
+            self.category_filter.addItem(category['name'], category['id'])
+        
+        self.category_filter.currentIndexChanged.connect(self.load_questions)
+        filter_layout.addWidget(self.category_filter)
+        filter_layout.addStretch()
+        
+        layout.addLayout(filter_layout)
+        
+        # Action buttons
+        button_layout = QHBoxLayout()
+        
+        add_button = QPushButton("Add Question")
+        add_button.clicked.connect(self.add_question)
+        button_layout.addWidget(add_button)
+        
+        edit_button = QPushButton("Edit Question")
+        edit_button.clicked.connect(self.edit_question)
+        button_layout.addWidget(edit_button)
+        
+        delete_button = QPushButton("Delete Question")
+        delete_button.clicked.connect(self.delete_question)
+        button_layout.addWidget(delete_button)
+        
+        button_layout.addStretch()
+        layout.addLayout(button_layout)
+        
+        # Questions table
+        self.table = QTableWidget()
+        self.table.setColumnCount(4)
+        self.table.setHorizontalHeaderLabels(["ID", "Category", "Question", "Type"])
+        self.table.setSelectionBehavior(QAbstractItemView.SelectionBehavior.SelectRows)
+        self.table.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.table.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        
+        # Set column widths
+        header = self.table.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents)
+        
+        layout.addWidget(self.table)
+        
+    def load_questions(self):
+        """Load questions from the database."""
+        questions = self.db.get_all_questions()
+        
+        # Filter by selected category
+        selected_category_id = self.category_filter.currentData()
+        if selected_category_id is not None:
+            questions = [q for q in questions if q['subject_id'] == selected_category_id]
+        
+        self.table.setRowCount(0)
+        for question in questions:
+            row = self.table.rowCount()
+            self.table.insertRow(row)
+            
+            self.table.setItem(row, 0, QTableWidgetItem(str(question['id'])))
+            self.table.setItem(row, 1, QTableWidgetItem(question['subject_name']))
+            
+            # Truncate question text if too long
+            question_text = question['question_text']
+            if len(question_text) > self.MAX_QUESTION_LENGTH:
+                question_text = question_text[:self.TRUNCATE_LENGTH] + "..."
+            self.table.setItem(row, 2, QTableWidgetItem(question_text))
+            
+            self.table.setItem(row, 3, QTableWidgetItem(question['question_type']))
+            
+    def add_question(self):
+        """Add a new question."""
+        dialog = QuestionDialog(self.db, self)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            self.load_questions()
+            
+    def edit_question(self):
+        """Edit the selected question."""
+        selected_rows = self.table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a question to edit.")
+            return
+            
+        row = selected_rows[0].row()
+        question_id = int(self.table.item(row, 0).text())
+        
+        dialog = QuestionDialog(self.db, self, question_id)
+        if dialog.exec() == QDialog.DialogCode.Accepted:
+            self.load_questions()
+            
+    def delete_question(self):
+        """Delete the selected question."""
+        selected_rows = self.table.selectionModel().selectedRows()
+        if not selected_rows:
+            QMessageBox.warning(self, "No Selection", "Please select a question to delete.")
+            return
+            
+        row = selected_rows[0].row()
+        question_id = int(self.table.item(row, 0).text())
+        question_text = self.table.item(row, 2).text()
+        
+        # Confirm deletion
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Icon.Warning)
+        msg.setWindowTitle("Confirm Deletion")
+        msg.setText(f"Are you sure you want to delete this question?")
+        msg.setInformativeText(f"Question: {question_text}")
+        msg.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        msg.setDefaultButton(QMessageBox.StandardButton.No)
+        
+        if msg.exec() == QMessageBox.StandardButton.Yes:
+            if self.db.delete_question(question_id):
+                QMessageBox.information(self, "Success", "Question deleted successfully.")
+                self.load_questions()
+            else:
+                QMessageBox.critical(self, "Error", "Failed to delete question.")
+
+
+class QuestionDialog(QDialog):
+    """Dialog for adding or editing a question."""
+    
+    def __init__(self, db, parent=None, question_id=None):
+        super().__init__(parent)
+        self.db = db
+        self.question_id = question_id
+        self.is_edit = question_id is not None
+        self.option_inputs = {}
+        self.correct_answer_checks = {}
+        self.init_ui()
+        
+        if self.is_edit:
+            self.load_question()
+        
+    def init_ui(self):
+        """Initialize the question dialog UI."""
+        self.setWindowTitle("Edit Question" if self.is_edit else "Add Question")
+        self.setGeometry(250, 250, 600, 500)
+        
+        layout = QVBoxLayout(self)
+        
+        # Category selection
+        category_layout = QHBoxLayout()
+        category_layout.addWidget(QLabel("Category:"))
+        self.category_combo = QComboBox()
+        
+        categories = self.db.get_all_subjects()
+        for category in categories:
+            self.category_combo.addItem(category['name'], category['id'])
+        
+        category_layout.addWidget(self.category_combo)
+        category_layout.addStretch()
+        layout.addLayout(category_layout)
+        
+        # Question text
+        layout.addWidget(QLabel("Question:"))
+        self.question_edit = QTextEdit()
+        self.question_edit.setMaximumHeight(80)
+        layout.addWidget(self.question_edit)
+        
+        # Question type
+        type_layout = QHBoxLayout()
+        type_layout.addWidget(QLabel("Type:"))
+        self.type_combo = QComboBox()
+        self.type_combo.addItem("Multiple Choice (Single Answer)", "multiple_choice")
+        self.type_combo.addItem("Multi-Select (Multiple Answers)", "multi_select")
+        type_layout.addWidget(self.type_combo)
+        type_layout.addStretch()
+        layout.addLayout(type_layout)
+        
+        # Options section
+        layout.addWidget(QLabel("Options (mark correct answers):"))
+        
+        options_widget = QWidget()
+        options_layout = QVBoxLayout(options_widget)
+        
+        for key in ['A', 'B', 'C', 'D', 'E', 'F']:
+            option_layout = QHBoxLayout()
+            
+            correct_check = QCheckBox(f"{key}:")
+            self.correct_answer_checks[key] = correct_check
+            option_layout.addWidget(correct_check)
+            
+            option_input = QLineEdit()
+            self.option_inputs[key] = option_input
+            option_layout.addWidget(option_input)
+            
+            options_layout.addLayout(option_layout)
+        
+        layout.addWidget(options_widget)
+        
+        # Buttons
+        button_box = QDialogButtonBox(
+            QDialogButtonBox.StandardButton.Save | QDialogButtonBox.StandardButton.Cancel
+        )
+        button_box.accepted.connect(self.save_question)
+        button_box.rejected.connect(self.reject)
+        layout.addWidget(button_box)
+        
+    def load_question(self):
+        """Load question data for editing."""
+        question_data = self.db.get_question_by_id(self.question_id)
+        
+        if not question_data:
+            QMessageBox.critical(self, "Error", "Failed to load question data.")
+            self.reject()
+            return
+        
+        # Set category
+        for i in range(self.category_combo.count()):
+            if self.category_combo.itemData(i) == question_data['subject_id']:
+                self.category_combo.setCurrentIndex(i)
+                break
+        
+        # Set question text
+        self.question_edit.setPlainText(question_data['question_text'])
+        
+        # Set question type
+        for i in range(self.type_combo.count()):
+            if self.type_combo.itemData(i) == question_data['question_type']:
+                self.type_combo.setCurrentIndex(i)
+                break
+        
+        # Set options
+        for key, text in question_data['options'].items():
+            if key in self.option_inputs:
+                self.option_inputs[key].setText(text)
+        
+        # Set correct answers
+        for key in question_data['correct_answers']:
+            if key in self.correct_answer_checks:
+                self.correct_answer_checks[key].setChecked(True)
+        
+    def save_question(self):
+        """Save the question to the database."""
+        subject_id = self.category_combo.currentData()
+        question_text = self.question_edit.toPlainText().strip()
+        question_type = self.type_combo.currentData()
+        
+        if not question_text:
+            QMessageBox.warning(self, "Validation Error", "Question text is required.")
+            return
+        
+        # Collect options
+        options = {}
+        for key, input_widget in self.option_inputs.items():
+            text = input_widget.text().strip()
+            if text:
+                options[key] = text
+        
+        if len(options) < 2:
+            QMessageBox.warning(self, "Validation Error", "At least 2 options are required.")
+            return
+        
+        # Collect correct answers
+        correct_answers = []
+        for key, check_widget in self.correct_answer_checks.items():
+            if check_widget.isChecked() and key in options:
+                correct_answers.append(key)
+        
+        if not correct_answers:
+            QMessageBox.warning(self, "Validation Error", "At least 1 correct answer is required.")
+            return
+        
+        if self.is_edit:
+            # Update existing question
+            if self.db.update_question(self.question_id, subject_id, question_text, 
+                                      question_type, options, correct_answers):
+                QMessageBox.information(self, "Success", "Question updated successfully.")
+                self.accept()
+            else:
+                QMessageBox.critical(self, "Error", "Failed to update question.")
+        else:
+            # Add new question
+            if self.db.add_question(subject_id, question_text, question_type, 
+                                   options, correct_answers):
+                QMessageBox.information(self, "Success", "Question added successfully.")
+                self.accept()
+            else:
+                QMessageBox.critical(self, "Error", "Failed to add question.")
 
 
 def main():

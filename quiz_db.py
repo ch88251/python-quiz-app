@@ -223,3 +223,240 @@ class QuizDatabase:
             print(f"Database delete error: {e}")
             self.conn.rollback()
             return False
+    
+    def add_subject(self, name, description=""):
+        """
+        Add a new subject/category to the database.
+        
+        Args:
+            name: The name of the subject
+            description: Optional description of the subject
+        
+        Returns:
+            subject_id if successful, None otherwise
+        """
+        if not self.conn:
+            if not self.connect():
+                return None
+        
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("""
+                INSERT INTO subjects (name, description)
+                VALUES (%s, %s)
+                RETURNING id
+            """, (name, description))
+            
+            subject_id = cursor.fetchone()[0]
+            self.conn.commit()
+            cursor.close()
+            
+            return subject_id
+            
+        except psycopg2.Error as e:
+            print(f"Database insert error: {e}")
+            self.conn.rollback()
+            return None
+    
+    def update_subject(self, subject_id, name, description=""):
+        """
+        Update an existing subject/category.
+        
+        Args:
+            subject_id: The ID of the subject to update
+            name: The new name of the subject
+            description: The new description of the subject
+        
+        Returns:
+            True if successful, False otherwise
+        """
+        if not self.conn:
+            if not self.connect():
+                return False
+        
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("""
+                UPDATE subjects
+                SET name = %s, description = %s
+                WHERE id = %s
+            """, (name, description, subject_id))
+            
+            self.conn.commit()
+            cursor.close()
+            return True
+            
+        except psycopg2.Error as e:
+            print(f"Database update error: {e}")
+            self.conn.rollback()
+            return False
+    
+    def delete_subject(self, subject_id):
+        """
+        Delete a subject/category and all associated questions (cascade).
+        
+        Args:
+            subject_id: The ID of the subject to delete
+        
+        Returns:
+            True if successful, False otherwise
+        """
+        if not self.conn:
+            if not self.connect():
+                return False
+        
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("DELETE FROM subjects WHERE id = %s", (subject_id,))
+            self.conn.commit()
+            cursor.close()
+            return True
+        except psycopg2.Error as e:
+            print(f"Database delete error: {e}")
+            self.conn.rollback()
+            return False
+    
+    def get_question_by_id(self, question_id):
+        """
+        Retrieve a single question with all its details.
+        
+        Args:
+            question_id: The ID of the question to retrieve
+        
+        Returns:
+            Dictionary with question details or None if not found
+        """
+        if not self.conn:
+            if not self.connect():
+                return None
+        
+        try:
+            cursor = self.conn.cursor(cursor_factory=RealDictCursor)
+            
+            # Get question details
+            cursor.execute("""
+                SELECT id, subject_id, question_text, question_type
+                FROM questions
+                WHERE id = %s
+            """, (question_id,))
+            
+            question = cursor.fetchone()
+            if not question:
+                cursor.close()
+                return None
+            
+            question = dict(question)
+            
+            # Get options
+            cursor.execute("""
+                SELECT option_key, option_text
+                FROM options
+                WHERE question_id = %s
+                ORDER BY option_key
+            """, (question_id,))
+            
+            question['options'] = {row['option_key']: row['option_text'] 
+                                  for row in cursor.fetchall()}
+            
+            # Get correct answers
+            cursor.execute("""
+                SELECT answer_key
+                FROM correct_answers
+                WHERE question_id = %s
+                ORDER BY answer_key
+            """, (question_id,))
+            
+            question['correct_answers'] = [row['answer_key'] for row in cursor.fetchall()]
+            
+            cursor.close()
+            return question
+            
+        except psycopg2.Error as e:
+            print(f"Database query error: {e}")
+            return None
+    
+    def update_question(self, question_id, subject_id, question_text, question_type, options, correct_answers):
+        """
+        Update an existing question and its options/answers.
+        
+        Args:
+            question_id: The ID of the question to update
+            subject_id: The ID of the subject this question belongs to
+            question_text: The updated question text
+            question_type: Type of question ('multiple_choice' or 'multi_select')
+            options: Dictionary of options {key: text}
+            correct_answers: List of correct answer keys
+        
+        Returns:
+            True if successful, False otherwise
+        """
+        if not self.conn:
+            if not self.connect():
+                return False
+        
+        try:
+            cursor = self.conn.cursor()
+            
+            # Update question
+            cursor.execute("""
+                UPDATE questions
+                SET subject_id = %s, question_text = %s, question_type = %s
+                WHERE id = %s
+            """, (subject_id, question_text, question_type, question_id))
+            
+            # Delete existing options and answers
+            cursor.execute("DELETE FROM options WHERE question_id = %s", (question_id,))
+            cursor.execute("DELETE FROM correct_answers WHERE question_id = %s", (question_id,))
+            
+            # Insert new options
+            for key, text in options.items():
+                cursor.execute("""
+                    INSERT INTO options (question_id, option_key, option_text)
+                    VALUES (%s, %s, %s)
+                """, (question_id, key, text))
+            
+            # Insert new correct answers
+            for answer in correct_answers:
+                cursor.execute("""
+                    INSERT INTO correct_answers (question_id, answer_key)
+                    VALUES (%s, %s)
+                """, (question_id, answer))
+            
+            self.conn.commit()
+            cursor.close()
+            
+            return True
+            
+        except psycopg2.Error as e:
+            print(f"Database update error: {e}")
+            self.conn.rollback()
+            return False
+    
+    def get_all_questions(self):
+        """
+        Retrieve all questions with their subject information.
+        
+        Returns:
+            List of question dictionaries with subject details
+        """
+        if not self.conn:
+            if not self.connect():
+                return []
+        
+        try:
+            cursor = self.conn.cursor(cursor_factory=RealDictCursor)
+            cursor.execute("""
+                SELECT q.id, q.subject_id, s.name as subject_name, 
+                       q.question_text, q.question_type
+                FROM questions q
+                JOIN subjects s ON q.subject_id = s.id
+                ORDER BY s.name, q.id
+            """)
+            
+            questions = cursor.fetchall()
+            cursor.close()
+            return [dict(q) for q in questions]
+            
+        except psycopg2.Error as e:
+            print(f"Database query error: {e}")
+            return []
