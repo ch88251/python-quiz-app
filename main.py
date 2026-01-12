@@ -26,8 +26,8 @@ class QuizApp(QMainWindow):
     def init_ui(self):
         """Initialize the user interface."""
         self.setWindowTitle("Quiz Application")
-        self.setGeometry(100, 100, 1200, 900)
-        self.setFixedSize(1200, 900)
+        self.setGeometry(100, 100, 1200, 1000)
+        self.setFixedSize(1200, 1000)
         
         # Create menu bar
         self.create_menu_bar()
