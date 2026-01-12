@@ -118,6 +118,24 @@ For questions with multiple correct answers, use an array:
 
 ## Screenshots
 
+**Application Startup**
+![Initial Screen](images/quiz_begin.png)
+
+**Quiz Progress**
+![Quiz Progress](images/quiz_progress.png)
+
+**Subject Management**
+![Subject Management](images/subject_management.png)
+
+**Question Management**
+![Question Management](images/question_management.png)
+
+**Add Questions**
+![Add Questions](images/add_question.png)
+
+**Edit Question**
+![Edit Question](images/edit_question.png)
+
 ## Database Management
 
 ### Start/Stop PostgreSQL
