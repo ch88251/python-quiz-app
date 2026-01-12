@@ -467,11 +467,19 @@ class QuizApp(QMainWindow):
         # Clear checkboxes list
         self.checkboxes = []
         
-        # Clear all widgets from options layout
+        # Clear all widgets and layouts from options layout
         while self.options_layout.count():
             item = self.options_layout.takeAt(0)
             if item.widget():
                 item.widget().deleteLater()
+            elif item.layout():
+                # Clear widgets from the nested layout
+                while item.layout().count():
+                    child_item = item.layout().takeAt(0)
+                    if child_item.widget():
+                        child_item.widget().deleteLater()
+                # Delete the layout itself
+                item.layout().deleteLater()
     
     def get_current_answer(self):
         """Get the user's answer for the current question."""
