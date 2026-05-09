@@ -1042,6 +1042,150 @@ INSERT INTO options (question_id, option_key, option_text) VALUES
 INSERT INTO correct_answers (question_id, answer_key) VALUES
 (78, 'B');
 
+-- Question 79
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'Jason receives an email at his Kelly Innovations LLC account. The email seems to be from Reed, a coworker, and states that Reed urgently needs to see the invoice for a recent project. However, Reed specifies he needs it within the next 10 minutes as he is in a meeting with Sasha and top executives. Jason quickly sends over the invoice without double-checking with Reed. Which type of attack best describes this situation?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(79, 'A', 'Whaling'),
+(79, 'B', 'Brute-force attack'),
+(79, 'C', 'Cloning'),
+(79, 'D', 'Pretexting');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(79, 'D');
+
+-- Quetion 80
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'Which of the following terms refers to a document that defines tasks that different parties perform in a cloud service agreement?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(80, 'A', 'Hybrid considerations'),
+(80, 'B', 'Responsibility matrix'),
+(80, 'C', 'Third-party vendors'),
+(80, 'D', 'Microservices');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(80, 'B');
+
+-- Question 81
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'When analyzing cloud-specific vulnerabilities, which of the following factors is essential to ensure that the system can be quickly restored after a disruption?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(81, 'A', 'Ease of recovery'),
+(81, 'B', 'Ease of deployment'),
+(81, 'C', 'Microservices'),
+(81, 'D', 'Patch availability');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(81, 'A');
+
+-- Question 82
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'Which of the following is a key consideration when evaluating the security implications of using microservices architecture in a cloud environment?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(82, 'A', 'Microservices can lead to increased attack surface due to multiple components communicating over the network'),
+(82, 'B', 'Microservices inherently provide better security due to their modular nature'),
+(82, 'C', 'Microservices eliminate the need for traditional security controls like firewalls and intrusion detection systems'),
+(82, 'D', 'Microservices reduce the risk of vulnerabilities by isolating components from each other');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(82, 'A');
+
+-- Question 83
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'In the context of cloud security, which of the following is a critical factor to consider when assessing the security risks associated with third-party vendors?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(83, 'A', 'The vendor''s market reputation'),
+(83, 'B', 'The vendor''s compliance with industry standards and regulations'),
+(83, 'C', 'The vendor''s financial stability'),
+(83, 'D', 'The vendor''s customer service quality');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(83, 'B');
+
+-- Question 84
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'Which of the following is a common vulnerability in cloud environments that can lead to unauthorized access to sensitive data if not properly mitigated?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(84, 'A', 'Insecure APIs'),
+(84, 'B', 'Lack of encryption'),
+(84, 'C', 'Insufficient identity and access management (IAM) controls'),
+(84, 'D', 'All of the above');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(84, 'D');
+
+-- Question 85
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'When evaluating the security implications of using a hybrid cloud architecture, which of the following is a key consideration to ensure the security of data and applications across both on-premises and cloud environments?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(85, 'A', 'Ensuring consistent security policies and controls across both environments'),
+(85, 'B', 'Relying solely on the cloud provider''s security measures for the cloud environment'),
+(85, 'C', 'Isolating the on-premises environment from the cloud environment to prevent any potential security breaches'),
+(85, 'D', 'Using different security tools and technologies for each environment to maximize security');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(85, 'A');
+
+-- Question 86
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'Which of the following is a best practice for securing data in transit in a cloud environment?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(86, 'A', 'Using strong encryption protocols such as TLS to protect data during transmission'),
+(86, 'B', 'Relying on the cloud provider''s network security measures to protect data in transit'),
+(86, 'C', 'Using a virtual private network (VPN) to create a secure connection between the client and the cloud environment'),
+(86, 'D', 'Both A and C');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(86, 'D');
+
+-- Question 87
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'In the context of cloud security, which of the following is a critical factor to consider when assessing the security risks associated with using microservices architecture?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(87, 'A', 'Microservices can lead to increased attack surface due to multiple components communicating over the network'),
+(87, 'B', 'Microservices inherently provide better security due to their modular nature'),
+(87, 'C', 'Microservices eliminate the need for traditional security controls like firewalls and intrusion detection systems'),
+(87, 'D', 'Microservices reduce the risk of vulnerabilities by isolating components from each other');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(87, 'A');
+
+-- Question 88
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'Which of the following is a common vulnerability in cloud environments that can lead to unauthorized access to sensitive data if not properly mitigated?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(88, 'A', 'Insecure APIs'),
+(88, 'B', 'Lack of encryption'),
+(88, 'C', 'Insufficient identity and access management (IAM) controls'),
+(88, 'D', 'All of the above');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(88, 'D');
+
+-- Question 89
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'When evaluating the security implications of using a hybrid cloud architecture, which of the following is a key consideration to ensure the security of data and applications across both on-premises and cloud environments?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(89, 'A', 'Ensuring consistent security policies and controls across both environments'),
+(89, 'B', 'Relying solely on the cloud provider''s security measures for the cloud environment'),
+(89, 'C', 'Isolating the on-premises environment from the cloud environment to prevent any potential security breaches'),
+(89, 'D', 'Using different security tools and technologies for each environment to maximize security');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(89, 'A');
+
+-- Question 90
+INSERT INTO questions (subject_id, question_text, question_type) VALUES
+(1, 'Which of the following is a best practice for securing data in transit in a cloud environment?');
+INSERT INTO options (question_id, option_key, option_text) VALUES
+(90, 'A', 'Using strong encryption protocols such as TLS to protect data during transmission'),
+(90, 'B', 'Relying on the cloud provider''s network security measures to protect data in transit'),
+(90, 'C', 'Using a virtual private network (VPN) to create a secure connection between the client and the cloud environment'),
+(90, 'D', 'Both A and C');
+
+INSERT INTO correct_answers (question_id, answer_key) VALUES
+(90, 'D');
+
 -- ======================================================================
 -- Questions and Answers for Subject: AWS Certified Solutions Architect
 -- ======================================================================
