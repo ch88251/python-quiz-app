@@ -1,5 +1,11 @@
 -- Initialize the Quiz Database Schema
 
+-- Drop existing tables
+DROP TABLE IF EXISTS correct_answers CASCADE;
+DROP TABLE IF EXISTS options CASCADE;
+DROP TABLE IF EXISTS questions CASCADE;
+DROP TABLE IF EXISTS subjects CASCADE;
+
 -- Create subjects table
 CREATE TABLE IF NOT EXISTS subjects (
     id SERIAL PRIMARY KEY,

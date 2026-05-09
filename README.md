@@ -33,23 +33,9 @@ A quiz application with a Graphical User Interface (GUI) using PyQt6 and Postgre
 - **macOS**: No additional system dependencies required (Qt uses the native Cocoa plugin)
 - **Windows**: No additional system dependencies required (Qt uses the native Win32 plugin)
 
-### Quick Setup
+### Setup
 
-Run the automated setup script:
-
-```bash
-./setup_postgres.sh
-```
-
-This will:
-1. Install Python dependencies
-2. Start PostgreSQL in Docker
-3. Migrate data from quiz.json to PostgreSQL
-4. Verify the setup
-
-### Manual Setup
-
-1. Install Python dependencies:
+Install Python dependencies:
 ```bash
 pip install -r requirements.txt
 ```
@@ -61,65 +47,10 @@ docker-compose up -d
 cd ..
 ```
 
-3. Run migration:
-```bash
-python migrate_to_postgres.py
-```
-
-4. Verify setup (optional):
-```bash
-python verify_database.py
-```
-
-## Usage
+### Usage
 
 ```bash
-python quiz_gui.py
-```
-
-## PostgreSQL Migration
-
-The application now uses PostgreSQL instead of JSON files. See [POSTGRES_MIGRATION.md](POSTGRES_MIGRATION.md) for detailed information about:
-- Database schema
-- Migration process
-- Database management
-- API usage
-- Troubleshooting
-
-## Quiz Format
-
-Questions are now stored in PostgreSQL with the following schema:
-
-- **questions** table: question text and type
-- **options** table: answer choices for each question
-- **correct_answers** table: correct answer keys
-
-The original `quiz.json` format is still supported for migration purposes.
-
-```json
-{
-  "quiz": [
-    {
-      "question": "Question text here?",
-      "type": "multiple_choice",
-      "options": {
-        "A": "First option",
-        "B": "Second option",
-        "C": "Third option",
-        "D": "Fourth option"
-      },
-      "correct_answer": ["A"]
-    }
-  ]
-}
-```
-
-### Multi-Select Questions
-
-For questions with multiple correct answers, use an array:
-
-```json
-"correct_answer": ["A", "C", "E"]
+python main.py
 ```
 
 ## Screenshots

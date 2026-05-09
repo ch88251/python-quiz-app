@@ -1044,7 +1044,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Question 79
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'Jason receives an email at his Kelly Innovations LLC account. The email seems to be from Reed, a coworker, and states that Reed urgently needs to see the invoice for a recent project. However, Reed specifies he needs it within the next 10 minutes as he is in a meeting with Sasha and top executives. Jason quickly sends over the invoice without double-checking with Reed. Which type of attack best describes this situation?');
+(1, 'Jason receives an email at his Kelly Innovations LLC account. The email seems to be from Reed, a coworker, and states that Reed urgently needs to see the invoice for a recent project. However, Reed specifies he needs it within the next 10 minutes as he is in a meeting with Sasha and top executives. Jason quickly sends over the invoice without double-checking with Reed. Which type of attack best describes this situation?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (79, 'A', 'Whaling'),
 (79, 'B', 'Brute-force attack'),
@@ -1056,7 +1056,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Quetion 80
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'Which of the following terms refers to a document that defines tasks that different parties perform in a cloud service agreement?');
+(1, 'Which of the following terms refers to a document that defines tasks that different parties perform in a cloud service agreement?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (80, 'A', 'Hybrid considerations'),
 (80, 'B', 'Responsibility matrix'),
@@ -1068,7 +1068,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Question 81
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'When analyzing cloud-specific vulnerabilities, which of the following factors is essential to ensure that the system can be quickly restored after a disruption?');
+(1, 'When analyzing cloud-specific vulnerabilities, which of the following factors is essential to ensure that the system can be quickly restored after a disruption?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (81, 'A', 'Ease of recovery'),
 (81, 'B', 'Ease of deployment'),
@@ -1080,7 +1080,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Question 82
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'Which of the following is a key consideration when evaluating the security implications of using microservices architecture in a cloud environment?');
+(1, 'Which of the following is a key consideration when evaluating the security implications of using microservices architecture in a cloud environment?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (82, 'A', 'Microservices can lead to increased attack surface due to multiple components communicating over the network'),
 (82, 'B', 'Microservices inherently provide better security due to their modular nature'),
@@ -1092,7 +1092,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Question 83
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'In the context of cloud security, which of the following is a critical factor to consider when assessing the security risks associated with third-party vendors?');
+(1, 'In the context of cloud security, which of the following is a critical factor to consider when assessing the security risks associated with third-party vendors?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (83, 'A', 'The vendor''s market reputation'),
 (83, 'B', 'The vendor''s compliance with industry standards and regulations'),
@@ -1104,7 +1104,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Question 84
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'Which of the following is a common vulnerability in cloud environments that can lead to unauthorized access to sensitive data if not properly mitigated?');
+(1, 'Which of the following is a common vulnerability in cloud environments that can lead to unauthorized access to sensitive data if not properly mitigated?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (84, 'A', 'Insecure APIs'),
 (84, 'B', 'Lack of encryption'),
@@ -1116,7 +1116,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Question 85
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'When evaluating the security implications of using a hybrid cloud architecture, which of the following is a key consideration to ensure the security of data and applications across both on-premises and cloud environments?');
+(1, 'When evaluating the security implications of using a hybrid cloud architecture, which of the following is a key consideration to ensure the security of data and applications across both on-premises and cloud environments?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (85, 'A', 'Ensuring consistent security policies and controls across both environments'),
 (85, 'B', 'Relying solely on the cloud provider''s security measures for the cloud environment'),
@@ -1128,7 +1128,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Question 86
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'Which of the following is a best practice for securing data in transit in a cloud environment?');
+(1, 'Which of the following is a best practice for securing data in transit in a cloud environment?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (86, 'A', 'Using strong encryption protocols such as TLS to protect data during transmission'),
 (86, 'B', 'Relying on the cloud provider''s network security measures to protect data in transit'),
@@ -1140,7 +1140,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Question 87
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'In the context of cloud security, which of the following is a critical factor to consider when assessing the security risks associated with using microservices architecture?');
+(1, 'In the context of cloud security, which of the following is a critical factor to consider when assessing the security risks associated with using microservices architecture?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (87, 'A', 'Microservices can lead to increased attack surface due to multiple components communicating over the network'),
 (87, 'B', 'Microservices inherently provide better security due to their modular nature'),
@@ -1152,7 +1152,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Question 88
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'Which of the following is a common vulnerability in cloud environments that can lead to unauthorized access to sensitive data if not properly mitigated?');
+(1, 'Which of the following is a common vulnerability in cloud environments that can lead to unauthorized access to sensitive data if not properly mitigated?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (88, 'A', 'Insecure APIs'),
 (88, 'B', 'Lack of encryption'),
@@ -1164,7 +1164,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Question 89
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'When evaluating the security implications of using a hybrid cloud architecture, which of the following is a key consideration to ensure the security of data and applications across both on-premises and cloud environments?');
+(1, 'When evaluating the security implications of using a hybrid cloud architecture, which of the following is a key consideration to ensure the security of data and applications across both on-premises and cloud environments?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (89, 'A', 'Ensuring consistent security policies and controls across both environments'),
 (89, 'B', 'Relying solely on the cloud provider''s security measures for the cloud environment'),
@@ -1176,7 +1176,7 @@ INSERT INTO correct_answers (question_id, answer_key) VALUES
 
 -- Question 90
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
-(1, 'Which of the following is a best practice for securing data in transit in a cloud environment?');
+(1, 'Which of the following is a best practice for securing data in transit in a cloud environment?', 'multiple_choice');
 INSERT INTO options (question_id, option_key, option_text) VALUES
 (90, 'A', 'Using strong encryption protocols such as TLS to protect data during transmission'),
 (90, 'B', 'Relying on the cloud provider''s network security measures to protect data in transit'),
@@ -1195,26 +1195,26 @@ INSERT INTO questions (subject_id, question_text, question_type) VALUES
 (2, 'A company has moved its business critical data to Amazon Elastic File System (Amazon EFS) which will be accessed by multiple Amazon EC2 instances.As an AWS Certified Solutions Architect - Associate, which of the following would you recommend to exercise access control such that only the permitted Amazon EC2 instances can read from the Amazon EFS file system? (Select two)', 'multiple_choice');
 
 INSERT INTO options (question_id, option_key, option_text) VALUES
-(79, 'A', 'Set up the IAM policy root credentials to control and configure the clients accessing the Amazon EFS file system'),
-(79, 'B', 'Use VPC security groups to control the network traffic to and from your file system'),
-(79, 'C', 'Use network access control list (network ACL) to control the network traffic to and from your Amazon EC2 instance'),
-(79, 'D', 'Use Amazon GuardDuty to curb unwanted access to Amazon EFS file system'),
-(79, 'E', 'Use an IAM policy to control access for clients who can mount your file system with the required permissions');
+(91, 'A', 'Set up the IAM policy root credentials to control and configure the clients accessing the Amazon EFS file system'),
+(91, 'B', 'Use VPC security groups to control the network traffic to and from your file system'),
+(91, 'C', 'Use network access control list (network ACL) to control the network traffic to and from your Amazon EC2 instance'),
+(91, 'D', 'Use Amazon GuardDuty to curb unwanted access to Amazon EFS file system'),
+(91, 'E', 'Use an IAM policy to control access for clients who can mount your file system with the required permissions');
 
 INSERT INTO correct_answers (question_id, answer_key) VALUES
-(79, 'B'),
-(79, 'E');
+(91, 'B'),
+(91, 'E');
 
 -- Question 2
 INSERT INTO questions (subject_id, question_text, question_type) VALUES
 (2, 'A digital event-ticketing platform hosts its core transaction-processing service on AWS. The service runs on Amazon EC2 instances and stores finalized transactions in an Amazon Aurora PostgreSQL database. During periods of high user activity - such as flash ticket sales or holiday promotions - the application begins timing out, causing failed or delayed purchases. A solutions architect has been asked to redesign the backend for scalability and cost-efficiency, without reengineering the database layer. Which combination of actions will meet these goals in the most cost-effective and scalable manner? (Select two)', 'multiple_choice');
 
 INSERT INTO options (question_id, option_key, option_text) VALUES
-(80, 'A', 'Deploy read replicas for the Aurora database in another Region and configure EC2 instances to read and write from the nearest replica based on latency'),
-(80, 'B', 'Use an Amazon ElastiCache cluster to cache database queries. Configure the application to store purchase transactions in the cache before writing to the database'),
-(80, 'C', 'Deploy an Amazon API Gateway with throttling and usage plans to slow down incoming purchase requests during peak times and maintain application stability'),
-(80, 'D', 'Modify the application to publish purchase events to an Amazon SQS queue. Launch an Auto Scaling group of EC2 workers that poll the queue and process purchases asynchronously'),
-(80, 'E', 'Implement Amazon RDS Proxy between the application and the Aurora PostgreSQL cluster. Deploy EC2 instances in an Auto Scaling group to retry transactions as needed');
+(92, 'A', 'Deploy read replicas for the Aurora database in another Region and configure EC2 instances to read and write from the nearest replica based on latency'),
+(92, 'B', 'Use an Amazon ElastiCache cluster to cache database queries. Configure the application to store purchase transactions in the cache before writing to the database'),
+(92, 'C', 'Deploy an Amazon API Gateway with throttling and usage plans to slow down incoming purchase requests during peak times and maintain application stability'),
+(92, 'D', 'Modify the application to publish purchase events to an Amazon SQS queue. Launch an Auto Scaling group of EC2 workers that poll the queue and process purchases asynchronously'),
+(92, 'E', 'Implement Amazon RDS Proxy between the application and the Aurora PostgreSQL cluster. Deploy EC2 instances in an Auto Scaling group to retry transactions as needed');
 INSERT INTO correct_answers (question_id, answer_key) VALUES
-(80, 'D'),
-(80, 'E');
+(92, 'D'),
+(92, 'E');
