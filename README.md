@@ -26,6 +26,12 @@ A quiz application with a Graphical User Interface (GUI) using PyQt6 and Postgre
 
 - Python 3.8 or higher
 - Docker and Docker Compose
+- **Linux (Ubuntu/Debian)**: `libxcb-cursor0` — required by Qt 6.5+ for the xcb platform plugin
+  ```bash
+  sudo apt-get install libxcb-cursor0
+  ```
+- **macOS**: No additional system dependencies required (Qt uses the native Cocoa plugin)
+- **Windows**: No additional system dependencies required (Qt uses the native Win32 plugin)
 
 ### Quick Setup
 
