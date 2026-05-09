@@ -2,9 +2,14 @@
 Database module for Quiz App - PostgreSQL backend
 """
 
+import configparser
+import os
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import random
+
+_config = configparser.ConfigParser()
+_config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
 
 
 class QuizDatabase:
@@ -130,8 +135,9 @@ class QuizDatabase:
             # Shuffle if requested
             if shuffle:
                 random.shuffle(quiz_data)
-            
-            return quiz_data
+
+            max_questions = _config.getint('quiz', 'max_questions', fallback=70)
+            return quiz_data[:max_questions]
             
         except psycopg2.Error as e:
             print(f"Database query error: {e}")
